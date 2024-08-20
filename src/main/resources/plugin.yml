@@ -1,0 +1,8 @@
+name: FakeGun
+version: '${project.version}'
+main: com.wenkrang.fakegun.FakeGun
+api-version: '1.20'
+commands:
+  fg:
+    description: FakeGun 的主命令
+    usage: /fg
