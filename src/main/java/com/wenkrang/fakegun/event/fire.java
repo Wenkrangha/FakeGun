@@ -25,10 +25,7 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class fire implements Listener {
@@ -160,7 +157,7 @@ public class fire implements Listener {
             Location particleLocation = eyeLocation.clone().add(direction.clone().multiply(i));
 
             // 在计算的位置生成粒子
-            particleLocation.getWorld().spawnParticle(Particle.SMOKE_NORMAL, particleLocation, 3, 0.1, 0.1, 0.1, 0);
+            particleLocation.getWorld().spawnParticle(Particle.SMOKE, particleLocation, 3, 0.1, 0.1, 0.1, 0);
         }
     }
 
@@ -220,6 +217,17 @@ public class fire implements Listener {
 
                             @Override
                             public void run() {
+                                final Map<Integer, ItemStack> returnItemStacks = new HashMap<>();
+                                for (int i = 0; i < event.getPlayer().getInventory().getSize(); i++) {
+                                    if (event.getPlayer().getInventory().getItem(i) != null) {
+                                        if (Objects.requireNonNull(event.getPlayer().getInventory().getItem(i)).getType().equals(Material.ARROW)) {
+                                            returnItemStacks.put(i, event.getPlayer().getInventory().getItem(i));
+                                            event.getPlayer().getInventory().remove(Objects.requireNonNull(event.getPlayer().getInventory().getItem(i)));
+                                        }
+                                    }
+                                }
+                                final ItemStack offHandItem = event.getPlayer().getInventory().getItemInOffHand();
+                                event.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR));
                                 if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null) {
                                     if (event.getPlayer().getScoreboardTags().contains("keeping")) {
                                         cancel();
@@ -269,23 +277,19 @@ public class fire implements Listener {
 
                                                         @Override
                                                         public void run() {
-                                                            if (true) {
-                                                                Vector velocity = item.getVelocity();
+                                                            final Vector velocity = item.getVelocity();
 
-                                                                // 检查速度是否为零
-                                                                if (velocity.equals(new Vector(0, 0, 0))) {
-                                                                    // 物品正在移动
-                                                                    item.remove();
-                                                                }
+                                                            // 检查速度是否为零
+                                                            if (velocity.equals(new Vector(0, 0, 0))) {
+                                                                // 物品正在移动
+                                                                item.remove();
                                                             }
-                                                            if (true) {
-                                                                Vector velocity = item2.getVelocity();
+                                                            final Vector velocity2 = item2.getVelocity();
 
-                                                                // 检查速度是否为零
-                                                                if (velocity.equals(new Vector(0, 0, 0))) {
-                                                                    // 物品正在移动
-                                                                    item2.remove();
-                                                                }
+                                                            // 检查速度是否为零
+                                                            if (velocity2.equals(new Vector(0, 0, 0))) {
+                                                                // 物品正在移动
+                                                                item2.remove();
                                                             }
                                                         }
                                                     }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, 3);
@@ -312,7 +316,7 @@ public class fire implements Listener {
 
                                                     Location location5 = calculateParticleLocation(rayTraceResult.getHitBlock().getLocation(), rayTraceResult.getHitBlockFace());
 
-                                                    rayTraceResult.getHitBlock().getWorld().spawnParticle(Particle.BLOCK_CRACK, location5, 10, rayTraceResult.getHitBlock().getBlockData());
+                                                    rayTraceResult.getHitBlock().getWorld().spawnParticle(Particle.BLOCK, location5, 10, rayTraceResult.getHitBlock().getBlockData());
 
 
                                                 } else {
@@ -334,7 +338,7 @@ public class fire implements Listener {
                                                             Location location1 = hitEntity.getLocation();
                                                             location1.setY(location1.getBlockY() + 1);
 
-                                                            hitEntity.getWorld().spawnParticle(Particle.BLOCK_CRACK, location1, getgun.getDamage() * 12, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
+                                                            hitEntity.getWorld().spawnParticle(Particle.BLOCK, location1, getgun.getDamage() * 12, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
                                                             hitEntity.getWorld().playSound(hitEntity.getLocation(), arrowHitSound, 1.0F, 1.0F);
                                                         } catch (Exception e) {
                                                             throw new RuntimeException(e);
@@ -375,6 +379,10 @@ public class fire implements Listener {
                                         cancel();
                                     }
                                 }
+                                if (!returnItemStacks.isEmpty()) {
+                                    returnItemStacks.forEach((k, v) -> event.getPlayer().getInventory().setItem(k, v));
+                                }
+                                event.getPlayer().getInventory().setItemInOffHand(offHandItem);
 
                             }
                         }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()).getSpeed());
