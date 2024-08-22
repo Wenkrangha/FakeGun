@@ -194,7 +194,9 @@ public class fire implements Listener {
 //        lore1.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
 //        itemMeta1.setLore(lore1);
 //        itemStack1.setItemMeta(itemMeta1);
-
+        if (Objects.equals(event.getHand(), EquipmentSlot.OFF_HAND)) {
+            event.setCancelled(true);
+        }
         if ((event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && event.getHand().equals(EquipmentSlot.HAND)) {
             if (event.getPlayer().getInventory().getItemInOffHand().getItemMeta() != null && gun.getgun(event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName()) != null) {
                 event.setCancelled(true);
@@ -217,17 +219,6 @@ public class fire implements Listener {
 
                             @Override
                             public void run() {
-                                final Map<Integer, ItemStack> returnItemStacks = new HashMap<>();
-                                for (int i = 0; i < event.getPlayer().getInventory().getSize(); i++) {
-                                    if (event.getPlayer().getInventory().getItem(i) != null) {
-                                        if (Objects.requireNonNull(event.getPlayer().getInventory().getItem(i)).getType().equals(Material.ARROW)) {
-                                            returnItemStacks.put(i, event.getPlayer().getInventory().getItem(i));
-                                            event.getPlayer().getInventory().remove(Objects.requireNonNull(event.getPlayer().getInventory().getItem(i)));
-                                        }
-                                    }
-                                }
-                                final ItemStack offHandItem = event.getPlayer().getInventory().getItemInOffHand();
-                                event.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR));
                                 if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null) {
                                     if (event.getPlayer().getScoreboardTags().contains("keeping")) {
                                         cancel();
@@ -379,10 +370,6 @@ public class fire implements Listener {
                                         cancel();
                                     }
                                 }
-                                if (!returnItemStacks.isEmpty()) {
-                                    returnItemStacks.forEach((k, v) -> event.getPlayer().getInventory().setItem(k, v));
-                                }
-                                event.getPlayer().getInventory().setItemInOffHand(offHandItem);
 
                             }
                         }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()).getSpeed());
