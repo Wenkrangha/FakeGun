@@ -11,6 +11,15 @@ public class gun {
     public ItemStack itemStack;
     public int speed;
     public int damage;
+    public int guneed;
+
+    public int getGuneed() {
+        return guneed;
+    }
+
+    public void setGuneed(int guneed) {
+        this.guneed = guneed;
+    }
 
     public void setAtBack(float atBack) {
         AtBack = atBack;

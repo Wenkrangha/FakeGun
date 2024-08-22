@@ -238,7 +238,7 @@ public class fire implements Listener {
                                             player.getWorld().spawnParticle(Particle.FLAME, player.getLocation(), 3);
                                             Sound arrowHitSound = Sound.ENTITY_ARROW_HIT;
 //                                    applyRecoilNotY(player, 0.01, 0.1);
-                                            applyViewShake(player, getgun.getAtBack(), 0F);
+
 
                                             new BukkitRunnable() {
 
@@ -342,6 +342,10 @@ public class fire implements Listener {
                                                     }
                                                 }
                                             }
+
+                                        }
+                                        if (!event.getPlayer().isSneaking()) {
+                                            applyViewShake(event.getPlayer(), getgun.getAtBack(), 0F);
                                         }
 
 
@@ -387,91 +391,125 @@ public class fire implements Listener {
 
             }
 
-////防空炮
-//            if (event.getPlayer().getInventory().getItemInMainHand().equals(itemStack1)) {
-//                if (!event.getPlayer().getScoreboardTags().contains("FireNow")) {
-//                    event.getPlayer().addScoreboardTag("FireNow");
-//                    int time = 20;
-//                    for (int i = 0; i < 5; i++) {
-//                        new BukkitRunnable() {
-//                            @Override
-//                            public void run() {
-//                                Player player = event.getPlayer();
-//                                player.getWorld().playEffect(player.getLocation(), Effect.ANVIL_LAND, 1, 50);
-//                                player.getWorld().playEffect(player.getLocation(), Effect.CLICK1, 1, 50);
-//                                player.getWorld().spawnParticle(Particle.FLAME, player.getLocation(), 3);
-//                                Arrow arrow = player.getWorld().spawn(player.getEyeLocation(), Arrow.class);
-//
-//                                // 设置箭的发射源为当前玩家
-//                                arrow.setShooter(player);
-//
-//                                // 设置箭的速度（力度）
-//                                arrow.setVelocity(player.getLocation().getDirection().multiply(5));
-//
-//                                //烟花？e饭
-//                                //先试试这个
-//                                arrow.addScoreboardTag("AntiAir");
-//                                new BukkitRunnable() {
-//
-//                                    @Override
-//                                    public void run() {
-//                                        new BukkitRunnable() {
-//
-//                                            @Override
-//                                            public void run() {
-//                                                //爆炸引线，超时删除
-//                                                arrow.remove();
-//                                            }
-//                                        }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 0);
-//
-//                                    }
-//                                }.runTaskLaterAsynchronously(FakeGun.getPlugin(FakeGun.class), 100);
-//                                new BukkitRunnable() {
-//
-//                                    @Override
-//                                    public void run() {
-//                                        new BukkitRunnable() {
-//
-//                                            @Override
-//                                            public void run() {
-//                                                List<Entity> nearbyEntities = arrow.getNearbyEntities(5, 5, 5);
-//                                                if (!nearbyEntities.isEmpty()) {
-//                                                    arrow.getWorld().spawnParticle(Particle.FLAME, arrow.getLocation(), 50);
-//                                                    arrow.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, arrow.getLocation(), 60);
-//                                                    arrow.getWorld().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, arrow.getLocation(), 60);
-//                                                    arrow.getWorld().createExplosion(arrow.getLocation(), 4F);
-//                                                    arrow.remove();
-//                                                    //ok上机实验
-//                                                    cancel();
-//                                                }
-//                                            }
-//                                        }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 0);
-//                                        if (arrow.isDead()) {
-//                                            cancel();
-//                                        }
-//                                    }
-//                                }.runTaskTimerAsynchronously(FakeGun.getPlugin(FakeGun.class), 20, 4);
-//                            }
-//                        }.runTaskLater(FakeGun.getPlugin(FakeGun.class), time);
-//                        time += 20;
-//                    }
-//                } else {
-//                    new BukkitRunnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            event.getPlayer().removeScoreboardTag("FireNow");
-//                        }
-//                    }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 100);
-//
-//                }
-//                event.setCancelled(true);
-//            }
+//防空炮
+            if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器"))  {
+                if (!event.getPlayer().getScoreboardTags().contains("FireNow")) {
+                    event.getPlayer().addScoreboardTag("FireNow");
+
+                    org.bukkit.inventory.meta.Damageable damageable = (org.bukkit.inventory.meta.Damageable) event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
+                    if (damageable.getDamage() == 0) {
+                        damageable.setDamage(465);
+                        ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
+                        itemInMainHand.setItemMeta(damageable);
+                        event.getPlayer().getInventory().setItemInMainHand(itemInMainHand);
+
+
+                        Player player = event.getPlayer();
+                        player.getWorld().playEffect(player.getLocation(), Effect.ANVIL_LAND, 1, 50);
+                        player.getWorld().playEffect(player.getLocation(), Effect.CLICK1, 1, 50);
+                        player.getWorld().spawnParticle(Particle.FLAME, player.getLocation(), 3);
+                        Arrow arrow = player.getWorld().spawn(player.getEyeLocation(), Arrow.class);
+
+                        // 设置箭的发射源为当前玩家
+                        arrow.setShooter(player);
+
+                        // 设置箭的速度（力度）
+                        Vector direction = player.getLocation().getDirection();
+
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                if (arrow.isDead()) {
+                                    cancel();
+                                }
+                                arrow.getWorld().spawnParticle(Particle.FLAME, arrow.getLocation(), 3);
+                                arrow.setVelocity(direction.multiply(1));
+                            }
+                        }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, 3);
+
+
+                        arrow.addScoreboardTag("AntiAir");
+                        new BukkitRunnable() {
+
+                            @Override
+                            public void run() {
+                                //爆炸引线，超时删除
+                                arrow.getWorld().spawnParticle(Particle.FLAME, arrow.getLocation(), 50);
+                                arrow.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, arrow.getLocation(), 60);
+                                arrow.getWorld().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, arrow.getLocation(), 60);
+                                arrow.getWorld().createExplosion(arrow.getLocation(), 4F);
+                                event.getPlayer().removeScoreboardTag("FireNow");
+                                arrow.remove();
+                            }
+                        }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 100);
+                        new BukkitRunnable() {
+
+                            @Override
+                            public void run() {
+                                new BukkitRunnable() {
+
+                                    @Override
+                                    public void run() {
+                                        List<Entity> nearbyEntities = arrow.getNearbyEntities(5, 5, 5);
+                                        if (!nearbyEntities.isEmpty()) {
+                                            arrow.getWorld().spawnParticle(Particle.FLAME, arrow.getLocation(), 50);
+                                            arrow.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, arrow.getLocation(), 60);
+                                            arrow.getWorld().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, arrow.getLocation(), 60);
+                                            arrow.getWorld().createExplosion(arrow.getLocation(), 4F);
+                                            event.getPlayer().removeScoreboardTag("FireNow");
+                                            arrow.remove();
+                                            //ok上机实验
+                                            cancel();
+                                        }
+                                    }
+                                }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 0);
+                                if (arrow.isDead()) {
+                                    cancel();
+                                }
+                            }
+                        }.runTaskTimerAsynchronously(FakeGun.getPlugin(FakeGun.class), 20, 4);
+                    }
+                }
 
 
 
 
 
+
+                event.setCancelled(true);
+            }
+
+            if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器"))  {
+                ItemStack itemStack = new ItemStack(Material.CROSSBOW);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName("§9§l烟雾§r弹");
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add(SpigotConsoleColors.WHITE + "你 看 得 见 吗？，一阵烟雾蒙蔽了你的双眼（");
+                lore.add(" ");
+                lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "投掷");
+                itemMeta.setLore(lore);
+                itemStack.setItemMeta(itemMeta);
+
+                Item item = event.getPlayer().getWorld().spawn(event.getPlayer().getEyeLocation(), Item.class);
+
+                item.setItemStack(itemStack);
+
+                item.setPickupDelay(1145141919);
+
+                item.setVelocity(event.getPlayer().getLocation().getDirection().multiply(3));
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        item.getWorld().spawnParticle(Particle.FLAME, item.getLocation(), 50);
+                        item.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, item.getLocation(), 60);
+                        item.getWorld().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, item.getLocation(), 60);
+
+                        item.remove();
+                    }
+                }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 100);
+                event.setCancelled(true);
+            }
         }
     }
 }
