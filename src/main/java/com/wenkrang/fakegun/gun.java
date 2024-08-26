@@ -12,6 +12,15 @@ public class gun {
     public int speed;
     public int damage;
     public int guneed;
+    public ItemStack repice;
+
+    public ItemStack getRepice() {
+        return repice;
+    }
+
+    public void setRepice(ItemStack repice) {
+        this.repice = repice;
+    }
 
     public int getGuneed() {
         return guneed;

@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
@@ -303,42 +304,41 @@ public class fire implements Listener {
                                             // 创建一个箭实体
                                             Predicate<Entity> entityFilter = entity -> !(entity.equals(player));
                                             RayTraceResult rayTraceResult = null;
-                                            rayTraceResult = player.getWorld().rayTrace(player.getEyeLocation(), player.getEyeLocation().getDirection(), 128, FluidCollisionMode.ALWAYS, true, 1, entityFilter);
+                                            rayTraceResult = player.getWorld().rayTrace(player.getEyeLocation(), player.getEyeLocation().getDirection(), 128, FluidCollisionMode.ALWAYS, true, 1.2, entityFilter);
                                             generateParticleTrajectory(player, Particle.FLAME, 2, 64);
                                             if (rayTraceResult != null) {
-
-                                                if (rayTraceResult.getHitBlock() != null) {
-
-
-                                                    Location location5 = calculateParticleLocation(rayTraceResult.getHitBlock().getLocation(), rayTraceResult.getHitBlockFace());
-
-                                                    rayTraceResult.getHitBlock().getWorld().spawnParticle(Particle.BLOCK_CRACK, location5, 10, rayTraceResult.getHitBlock().getBlockData());
+                                                if (rayTraceResult.getHitEntity() != null && rayTraceResult.getHitEntity() instanceof Damageable) {
+                                                    try {
 
 
-                                                } else {
-                                                    if (rayTraceResult.getHitEntity() != null && rayTraceResult.getHitEntity() instanceof Damageable) {
-                                                        try {
+                                                        Damageable hitEntity = (Damageable) rayTraceResult.getHitEntity();
+                                                        hitEntity.damage(new Random().nextInt(5) + 2);
+
+                                                        // 获取玩家当前朝向的方向向量
 
 
-                                                            Damageable hitEntity = (Damageable) rayTraceResult.getHitEntity();
-                                                            hitEntity.damage(new Random().nextInt(5) + 2);
-
-                                                            // 获取玩家当前朝向的方向向量
-
-
-                                                            // 给实体添加后坐力速度
-                                                            // 给方向向量添加一个垂直于玩家视角的小幅反向速度
-                                                            applyRecoil((LivingEntity) hitEntity, 0.3, 0.1);
+                                                        // 给实体添加后坐力速度
+                                                        // 给方向向量添加一个垂直于玩家视角的小幅反向速度
+                                                        applyRecoil((LivingEntity) hitEntity, 0.3, 0.1);
 
 
-                                                            Location location1 = hitEntity.getLocation();
-                                                            location1.setY(location1.getBlockY() + 1);
+                                                        Location location1 = hitEntity.getLocation();
+                                                        location1.setY(location1.getBlockY() + 1);
 
-                                                            hitEntity.getWorld().spawnParticle(Particle.BLOCK_CRACK, location1, getgun.getDamage() * 12, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
-                                                            hitEntity.getWorld().playSound(hitEntity.getLocation(), arrowHitSound, 1.0F, 1.0F);
-                                                        } catch (Exception e) {
-                                                            throw new RuntimeException(e);
-                                                        }
+                                                        hitEntity.getWorld().spawnParticle(Particle.BLOCK_CRACK, location1, getgun.getDamage() * 12, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
+                                                        hitEntity.getWorld().playSound(hitEntity.getLocation(), arrowHitSound, 1.0F, 1.0F);
+                                                    } catch (Exception e) {
+                                                        throw new RuntimeException(e);
+                                                    }
+                                                }else {
+                                                    if (rayTraceResult.getHitBlock() != null) {
+
+
+                                                        Location location5 = calculateParticleLocation(rayTraceResult.getHitBlock().getLocation(), rayTraceResult.getHitBlockFace());
+
+                                                        rayTraceResult.getHitBlock().getWorld().spawnParticle(Particle.BLOCK_CRACK, location5, 10, rayTraceResult.getHitBlock().getBlockData());
+
+
                                                     }
                                                 }
                                             }
@@ -479,8 +479,8 @@ public class fire implements Listener {
                 event.setCancelled(true);
             }
 
-            if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器"))  {
-                ItemStack itemStack = new ItemStack(Material.CROSSBOW);
+            if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("§9§l烟雾§r弹"))  {
+                ItemStack itemStack = new ItemStack(Material.FIREWORK_STAR);
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName("§9§l烟雾§r弹");
                 ArrayList<String> lore = new ArrayList<>();
@@ -501,13 +501,34 @@ public class fire implements Listener {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        item.getWorld().spawnParticle(Particle.FLAME, item.getLocation(), 50);
-                        item.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, item.getLocation(), 60);
-                        item.getWorld().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, item.getLocation(), 60);
+                        Location location = item.getLocation();
+                        location.add(0, 1, 0);
+                        BukkitTask bukkitTask = new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                item.getWorld().spawnParticle(Particle.FLAME, location, 50);
+                                item.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, location, 60);
+                                item.getWorld().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, location, 60);
+                            }
+                        }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, 5);
+                        new BukkitRunnable() {
+
+                            @Override
+                            public void run() {
+                                bukkitTask.cancel();
+                            }
+                        }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 100);
+
 
                         item.remove();
                     }
                 }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 100);
+                ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
+                if (itemInMainHand.getAmount() > 0) {
+                    itemInMainHand.setAmount(itemInMainHand.getAmount() - 1);
+                } else if (itemInMainHand.getAmount() == 0){
+                    event.getPlayer().getInventory().setItemInMainHand(null);
+                }
                 event.setCancelled(true);
             }
         }

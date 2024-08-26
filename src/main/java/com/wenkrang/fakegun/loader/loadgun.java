@@ -19,6 +19,7 @@ public class loadgun {
             lore.add(SpigotConsoleColors.WHITE + "正儿八经的突击步枪，速度不是\"很快\"");
             lore.add(" ");
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
+            lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手枪 + 主手弹药  " + SpigotConsoleColors.RESET + " 换弹");
             itemMeta.setLore(lore);
             // 获取弩的元数据
             CrossbowMeta crossbowMeta = (CrossbowMeta) itemMeta;
@@ -40,6 +41,7 @@ public class loadgun {
             minimachinegun.setSpeed(1);
             minimachinegun.setGuneed(1);
             minimachinegun.load();
+            minimachinegun.setRepice(new ItemStack(Material.IRON_INGOT));
         }
         if (true) {
             ItemStack itemStack = new ItemStack(Material.CROSSBOW);
@@ -48,7 +50,9 @@ public class loadgun {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(SpigotConsoleColors.WHITE + "你爷用的老年机枪，速度不是\"很快\"");
             lore.add(" ");
+
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
+            lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手枪 + 主手弹药  " + SpigotConsoleColors.RESET + " 换弹");
             itemMeta.setLore(lore);
             // 获取弩的元数据
             CrossbowMeta crossbowMeta = (CrossbowMeta) itemMeta;
@@ -66,6 +70,7 @@ public class loadgun {
             minimachinegun.setKeeps(0);
             minimachinegun.setTicks(15);
             minimachinegun.setReloadtime(3);
+            minimachinegun.setRepice(new ItemStack(Material.GOLD_INGOT));
             minimachinegun.setGuneed(1);
             minimachinegun.setSpeed(3);
             minimachinegun.setDamage(15);
@@ -78,7 +83,9 @@ public class loadgun {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(SpigotConsoleColors.WHITE + "你爷用的老年机枪，速度不是\"很快\"");
             lore.add(" ");
+
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
+            lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手枪 + 主手弹药  " + SpigotConsoleColors.RESET + " 换弹");
             itemMeta.setLore(lore);
             // 获取弩的元数据
             CrossbowMeta crossbowMeta = (CrossbowMeta) itemMeta;
@@ -99,6 +106,7 @@ public class loadgun {
             minimachinegun.setReloadtime(3);
             minimachinegun.setSpeed(3);
             minimachinegun.setDamage(15);
+            minimachinegun.setRepice(new ItemStack(Material.DIAMOND));
             minimachinegun.load();
         }
         if (true) {
@@ -107,8 +115,10 @@ public class loadgun {
             itemMeta.setDisplayName("§9§l重型§r步枪");
             ArrayList<String> lore = new ArrayList<>();
             lore.add(SpigotConsoleColors.WHITE + "你爷用的老年机枪，速度不是\"很快\"");
+
             lore.add(" ");
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
+            lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手枪 + 主手弹药  " + SpigotConsoleColors.RESET + " 换弹");
             itemMeta.setLore(lore);
             // 获取弩的元数据
             CrossbowMeta crossbowMeta = (CrossbowMeta) itemMeta;
@@ -124,6 +134,7 @@ public class loadgun {
             minimachinegun.setItemStack(itemStack);
             minimachinegun.setAtBack(10);
             minimachinegun.setKeeps(40);
+            minimachinegun.setRepice(new ItemStack(Material.TNT_MINECART));
             minimachinegun.setTicks(93);
             minimachinegun.setReloadtime(4);
             minimachinegun.setSpeed(3);
