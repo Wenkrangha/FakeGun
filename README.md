@@ -1,5 +1,5 @@
 # FakeGun - 寄枪
-![Image text](Boat.jpg)
+![Image text](Boat.png)
 ### 作者 : Wenkrang 
 ### 兼容性 : Wenkrang , Fangtang3
 ### 测试 : CatlikeEwe1160 , Fangtang3
