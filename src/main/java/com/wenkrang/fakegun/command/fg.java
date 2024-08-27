@@ -3,6 +3,7 @@ package com.wenkrang.fakegun.command;
 import com.wenkrang.fakegun.FakeGun;
 import com.wenkrang.fakegun.gun;
 import com.wenkrang.lib.SpigotConsoleColors;
+import com.wenkrang.lib.shootest;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -46,7 +47,7 @@ public class fg implements CommandExecutor {
                 commandSender.sendMessage(" §4| §7help  帮助列表");
 //                commandSender.sendMessage(" §4| §7getgun  获取枪");
                 commandSender.sendMessage(" §4| §7guide  获取指南");
-
+                commandSender.sendMessage(" §4| §7- 创造下，右键配方可以将直接获取物品");
             }
             if  (strings[0].equalsIgnoreCase("guide")) {
                 if (commandSender instanceof Player) {

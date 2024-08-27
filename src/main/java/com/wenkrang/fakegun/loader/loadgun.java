@@ -17,6 +17,7 @@ public class loadgun {
             itemMeta.setDisplayName("§9§l突击§r步枪");
             ArrayList<String> lore = new ArrayList<>();
             lore.add(SpigotConsoleColors.WHITE + "正儿八经的突击步枪，速度不是\"很快\"");
+            lore.add(SpigotConsoleColors.WHITE + "需要子弹  [小口径子弹]");
             lore.add(" ");
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手枪 + 主手弹药  " + SpigotConsoleColors.RESET + " 换弹");
@@ -49,6 +50,7 @@ public class loadgun {
             itemMeta.setDisplayName("§9§l全自动§r轻机枪");
             ArrayList<String> lore = new ArrayList<>();
             lore.add(SpigotConsoleColors.WHITE + "你爷用的老年机枪，速度不是\"很快\"");
+            lore.add(SpigotConsoleColors.WHITE + "需要子弹  [小口径子弹]");
             lore.add(" ");
 
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
@@ -81,7 +83,8 @@ public class loadgun {
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName("§9§l步§r枪");
             ArrayList<String> lore = new ArrayList<>();
-            lore.add(SpigotConsoleColors.WHITE + "你爷用的老年机枪，速度不是\"很快\"");
+            lore.add(SpigotConsoleColors.WHITE + "这绝对不是什么燧发枪，也绝对不会夹手指（");
+            lore.add(SpigotConsoleColors.WHITE + "需要子弹  [大口径子弹]");
             lore.add(" ");
 
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
@@ -114,7 +117,8 @@ public class loadgun {
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName("§9§l重型§r步枪");
             ArrayList<String> lore = new ArrayList<>();
-            lore.add(SpigotConsoleColors.WHITE + "你爷用的老年机枪，速度不是\"很快\"");
+            lore.add(SpigotConsoleColors.WHITE + "也 许 是 把 大 狙，一枪一个XPY（");
+            lore.add(SpigotConsoleColors.WHITE + "需要子弹  [大口径子弹]");
 
             lore.add(" ");
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");

@@ -13,7 +13,10 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class PlayerJoin implements Listener {
@@ -28,7 +31,7 @@ public class PlayerJoin implements Listener {
     }
 
     @EventHandler
-    public static void OnPlayerJoin(org.bukkit.event.player.PlayerJoinEvent event) {
+    public static void OnPlayerJoin(org.bukkit.event.player.PlayerJoinEvent event) throws IOException {
         if (event.getPlayer().getScoreboardTags().contains("FireNow")) {
             event.getPlayer().removeScoreboardTag("FireNow");
         }
@@ -38,6 +41,26 @@ public class PlayerJoin implements Listener {
         if (event.getPlayer().getScoreboardTags().contains("keeping")) {
             event.getPlayer().removeScoreboardTag("keeping");
         }
+//
+//        File file = new File("./plugins/FakeGun/Players/");
+//        file.mkdirs();
+//        String[] list = file.list();
+//        boolean is = false;
+//        for (String s : list) {
+//            if (s == event.getPlayer().getName()) {
+//                is = true;
+//            }
+//        }
+//
+//        if (!is) {
+//            new File("./plugins/FakeGun/Players/" + event.getPlayer().getName()).createNewFile();
+//            event.getPlayer().chat("/fg guide");
+//        }
+//
+//        event.getPlayer().sendMessage(Arrays.toString(list));
+//
+
+
         new BukkitRunnable() {
             @Override
             public void run() {

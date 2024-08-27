@@ -73,6 +73,7 @@ public final class FakeGun extends JavaPlugin {
                 ArrayList<String> lore = new ArrayList<>();
                 lore.add(SpigotConsoleColors.WHITE + "普普通通的火箭筒，可以发射火箭弹，造成");
                 lore.add(SpigotConsoleColors.WHITE + "大爆炸但愿你喜欢吧");
+                lore.add(SpigotConsoleColors.WHITE + "需要子弹  [火箭弹]");
                 lore.add(" ");
                 lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
                 lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手枪 + 主手弹药  " + SpigotConsoleColors.RESET + " 换弹");

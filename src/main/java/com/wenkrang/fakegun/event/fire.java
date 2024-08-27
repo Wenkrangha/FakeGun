@@ -5,6 +5,7 @@ import com.wenkrang.fakegun.gun;
 import com.wenkrang.lib.CollisionChecker;
 import com.wenkrang.lib.NearestBlockFinder;
 import com.wenkrang.lib.SpigotConsoleColors;
+import com.wenkrang.lib.shootest;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -26,10 +27,7 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class fire implements Listener {
@@ -229,15 +227,8 @@ public class fire implements Listener {
                                     org.bukkit.inventory.meta.Damageable damageable1 = (org.bukkit.inventory.meta.Damageable) event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
                                     if (event.getPlayer().isOnline() && event.getPlayer().getScoreboardTags().contains("FireNow") && gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null && !event.getPlayer().getScoreboardTags().contains("reload") && !event.getPlayer().getScoreboardTags().contains("keeping")) {
                                         if (damageable1.getDamage() <= 465 - gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()).getTicks()) {
-                                            damageable1.setDamage(damageable1.getDamage() + getgun.getTicks());
-                                            ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
-                                            itemInMainHand.setItemMeta(damageable1);
-                                            event.getPlayer().getInventory().setItemInMainHand(itemInMainHand);
                                             Player player = event.getPlayer();
-                                            player.getWorld().playEffect(player.getLocation(), Effect.ANVIL_LAND, 1, 50);
-                                            player.getWorld().playEffect(player.getLocation(), Effect.CLICK1, 1, 50);
-                                            player.getWorld().spawnParticle(Particle.FLAME, player.getLocation(), 3);
-                                            Sound arrowHitSound = Sound.ENTITY_ARROW_HIT;
+
 //                                    applyRecoilNotY(player, 0.01, 0.1);
 
 
@@ -245,102 +236,59 @@ public class fire implements Listener {
 
                                                 @Override
                                                 public void run() {
-                                                    Item item = player.getWorld().spawn(player.getEyeLocation(), Item.class);
-
-                                                    ItemStack itemStack2 = new ItemStack(Material.IRON_NUGGET);
-
-                                                    item.setItemStack(itemStack2);
-
-                                                    item.setPickupDelay(1145141919);
-
-                                                    // 设置箭的速度（力度），这里假设是常规速度的两倍
-                                                    item.setVelocity(player.getLocation().getDirection().multiply(12));
-
-                                                    Item item2 = player.getWorld().spawn(player.getEyeLocation(), Item.class);
-
-                                                    ItemStack itemStack3 = new ItemStack(Material.GOLD_NUGGET);
-
-                                                    item2.setItemStack(itemStack3);
-
-                                                    item2.setPickupDelay(1145141919);
-
-                                                    // 设置箭的速度（力度），这里假设是常规速度的两倍
-                                                    item2.setVelocity(player.getLocation().getDirection().multiply(RANDOM.nextFloat(0F, 0.3F)));
-                                                    new BukkitRunnable() {
-
-                                                        @Override
-                                                        public void run() {
-                                                            if (true) {
-                                                                Vector velocity = item.getVelocity();
-
-                                                                // 检查速度是否为零
-                                                                if (velocity.equals(new Vector(0, 0, 0))) {
-                                                                    // 物品正在移动
-                                                                    item.remove();
-                                                                }
-                                                            }
-                                                            if (true) {
-                                                                Vector velocity = item2.getVelocity();
-
-                                                                // 检查速度是否为零
-                                                                if (velocity.equals(new Vector(0, 0, 0))) {
-                                                                    // 物品正在移动
-                                                                    item2.remove();
-                                                                }
-                                                            }
-                                                        }
-                                                    }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, 3);
-                                                    new BukkitRunnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            item.remove();
-                                                            item2.remove();
-                                                        }
-                                                    }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 100);
+                                                    shootest.run(player, getgun);
                                                 }
                                             }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 0);
+                                            damageable1.setDamage(damageable1.getDamage() + getgun.getTicks());
+                                            ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
+                                            itemInMainHand.setItemMeta(damageable1);
+                                            event.getPlayer().getInventory().setItemInMainHand(itemInMainHand);
 
+                                            player.getWorld().playEffect(player.getLocation(), Effect.ANVIL_LAND, 1, 50);
+                                            player.getWorld().playEffect(player.getLocation(), Effect.CLICK1, 1, 50);
+                                            player.getWorld().spawnParticle(Particle.FLAME, player.getLocation(), 3);
+                                            Sound arrowHitSound = Sound.ENTITY_ARROW_HIT;
 
                                             // 创建一个箭实体
                                             Predicate<Entity> entityFilter = entity -> !(entity.equals(player));
                                             RayTraceResult rayTraceResult = null;
                                             rayTraceResult = player.getWorld().rayTrace(player.getEyeLocation(), player.getEyeLocation().getDirection(), 128, FluidCollisionMode.ALWAYS, true, 1.2, entityFilter);
-                                            generateParticleTrajectory(player, Particle.FLAME, 2, 64);
+//                                            generateParticleTrajectory(player, Particle.FLAME, 2, 64);
                                             if (rayTraceResult != null) {
-                                                if (rayTraceResult.getHitEntity() != null && rayTraceResult.getHitEntity() instanceof Damageable) {
-                                                    try {
+//                                                if (rayTraceResult.getHitEntity() != null && rayTraceResult.getHitEntity() instanceof Damageable) {
+//                                                    try {
+//
+//
+//                                                        Damageable hitEntity = (Damageable) rayTraceResult.getHitEntity();
+//                                                        hitEntity.damage(new Random().nextInt(5) + 2);
+//
+//                                                        // 获取玩家当前朝向的方向向量
+//
+//
+//                                                        // 给实体添加后坐力速度
+//                                                        // 给方向向量添加一个垂直于玩家视角的小幅反向速度
+//                                                        applyRecoil((LivingEntity) hitEntity, 0.3, 0.1);
+//
+//
+//                                                        Location location1 = hitEntity.getLocation();
+//                                                        location1.setY(location1.getBlockY() + 1);
+//
+////                                                        hitEntity.getWorld().spawnParticle(Particle.BLOCK_CRACK, location1, getgun.getDamage() * 12, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
+//                                                        hitEntity.getWorld().playSound(hitEntity.getLocation(), arrowHitSound, 1.0F, 1.0F);
+//                                                    } catch (Exception e) {
+//                                                        throw new RuntimeException(e);
+//                                                    }
+//                                                }else {
+                                                if (rayTraceResult.getHitBlock() != null) {
 
 
-                                                        Damageable hitEntity = (Damageable) rayTraceResult.getHitEntity();
-                                                        hitEntity.damage(new Random().nextInt(5) + 2);
+                                                    Location location5 = calculateParticleLocation(rayTraceResult.getHitBlock().getLocation(), rayTraceResult.getHitBlockFace());
 
-                                                        // 获取玩家当前朝向的方向向量
-
-
-                                                        // 给实体添加后坐力速度
-                                                        // 给方向向量添加一个垂直于玩家视角的小幅反向速度
-                                                        applyRecoil((LivingEntity) hitEntity, 0.3, 0.1);
+                                                    rayTraceResult.getHitBlock().getWorld().spawnParticle(Particle.BLOCK_CRACK, location5, 10, rayTraceResult.getHitBlock().getBlockData());
 
 
-                                                        Location location1 = hitEntity.getLocation();
-                                                        location1.setY(location1.getBlockY() + 1);
-
-                                                        hitEntity.getWorld().spawnParticle(Particle.BLOCK_CRACK, location1, getgun.getDamage() * 12, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
-                                                        hitEntity.getWorld().playSound(hitEntity.getLocation(), arrowHitSound, 1.0F, 1.0F);
-                                                    } catch (Exception e) {
-                                                        throw new RuntimeException(e);
-                                                    }
-                                                }else {
-                                                    if (rayTraceResult.getHitBlock() != null) {
-
-
-                                                        Location location5 = calculateParticleLocation(rayTraceResult.getHitBlock().getLocation(), rayTraceResult.getHitBlockFace());
-
-                                                        rayTraceResult.getHitBlock().getWorld().spawnParticle(Particle.BLOCK_CRACK, location5, 10, rayTraceResult.getHitBlock().getBlockData());
-
-
-                                                    }
                                                 }
+
                                             }
 
                                         }
