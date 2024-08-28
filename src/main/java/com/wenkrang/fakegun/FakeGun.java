@@ -2,12 +2,9 @@ package com.wenkrang.fakegun;
 
 import com.wenkrang.fakegun.command.fg;
 import com.wenkrang.fakegun.command.fgTabComplete;
-import com.wenkrang.fakegun.event.ArrowStopDetector;
-import com.wenkrang.fakegun.event.PlayerItemHeld;
-import com.wenkrang.fakegun.event.PlayerJoin;
+import com.wenkrang.fakegun.event.*;
 import com.wenkrang.fakegun.event.book.PlayerClick;
 import com.wenkrang.fakegun.event.book.PlayerInteract;
-import com.wenkrang.fakegun.event.fire;
 import com.wenkrang.fakegun.loader.loadgun;
 import com.wenkrang.lib.ConsoleLoger;
 import com.wenkrang.lib.Loader;
@@ -39,6 +36,7 @@ public final class FakeGun extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ArrowStopDetector(), this);
         getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
         getServer().getPluginManager().registerEvents(new PlayerClick(), this);
+
         this.getCommand("fg").setExecutor(new fg());
         this.getCommand("fg").setTabCompleter(new fgTabComplete());
         loadgun.load();
@@ -52,7 +50,7 @@ public final class FakeGun extends JavaPlugin {
                 "/_/    \\__,_/_/|_|\\___/\\____/\\__,_/_/ /_/ \n" +
                 "                                          \n");
         ConsoleLoger.info("当前服务器版本：" + VersionChecker.getVersion());
-        getServer().getConsoleSender().sendMessage("§9§l[*] §r加载完毕,当前版本 : 1.0");
+        getServer().getConsoleSender().sendMessage("§9§l[*] §r加载完毕,当前版本 : 1.1a");
 
         try {for (int i = 0;i < Guns.size();i++) {
             gun gun = Guns.get(i);

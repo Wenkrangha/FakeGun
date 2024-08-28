@@ -192,6 +192,22 @@ public class PlayerJoin implements Listener {
                     }
                 }
 
+                if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null) {
+                    if (event.getPlayer().isSneaking()) {
+                        if (event.getPlayer().getInventory().getItemInOffHand().getType().equals(Material.AIR)) {
+                            event.getPlayer().getInventory().setItemInOffHand(event.getPlayer().getInventory().getItemInMainHand());
+                            event.getPlayer().getInventory().setItemInMainHand(null);
+                        }
+                    }
+                }
+                if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器")) {
+                    if (event.getPlayer().isSneaking()) {
+                        if (event.getPlayer().getInventory().getItemInOffHand().getType().equals(Material.AIR)) {
+                            event.getPlayer().getInventory().setItemInOffHand(event.getPlayer().getInventory().getItemInMainHand());
+                            event.getPlayer().getInventory().setItemInMainHand(null);
+                        }
+                    }
+                }
             }
         }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, 1);
     }

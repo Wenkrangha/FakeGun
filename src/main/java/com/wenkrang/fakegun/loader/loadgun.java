@@ -68,7 +68,7 @@ public class loadgun {
             gun minimachinegun = new gun();
             minimachinegun.setName("§9§l全自动§r轻机枪");
             minimachinegun.setItemStack(itemStack);
-            minimachinegun.setAtBack(3);
+            minimachinegun.setAtBack(2);
             minimachinegun.setKeeps(0);
             minimachinegun.setTicks(15);
             minimachinegun.setReloadtime(3);
@@ -102,7 +102,7 @@ public class loadgun {
             gun minimachinegun = new gun();
             minimachinegun.setName("§9§l步§r枪");
             minimachinegun.setItemStack(itemStack);
-            minimachinegun.setAtBack(6);
+            minimachinegun.setAtBack(4);
             minimachinegun.setKeeps(20);
             minimachinegun.setTicks(15);
             minimachinegun.setGuneed(2);
@@ -136,7 +136,7 @@ public class loadgun {
             gun minimachinegun = new gun();
             minimachinegun.setName("§9§l重型§r步枪");
             minimachinegun.setItemStack(itemStack);
-            minimachinegun.setAtBack(10);
+            minimachinegun.setAtBack(6);
             minimachinegun.setKeeps(40);
             minimachinegun.setRepice(new ItemStack(Material.TNT_MINECART));
             minimachinegun.setTicks(93);
