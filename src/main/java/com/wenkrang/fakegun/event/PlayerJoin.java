@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 public class PlayerJoin implements Listener {
@@ -200,7 +201,7 @@ public class PlayerJoin implements Listener {
                         }
                     }
                 }
-                if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器")) {
+                if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器")) {
                     if (event.getPlayer().isSneaking()) {
                         if (event.getPlayer().getInventory().getItemInOffHand().getType().equals(Material.AIR)) {
                             event.getPlayer().getInventory().setItemInOffHand(event.getPlayer().getInventory().getItemInMainHand());

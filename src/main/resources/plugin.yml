@@ -1,7 +1,7 @@
 name: FakeGun
 version: '${project.version}'
 main: com.wenkrang.fakegun.FakeGun
-api-version: '1.20'
+api-version: '1.19'
 commands:
   fg:
     description: FakeGun 的主命令

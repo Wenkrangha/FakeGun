@@ -50,7 +50,7 @@ public final class FakeGun extends JavaPlugin {
                 "/_/    \\__,_/_/|_|\\___/\\____/\\__,_/_/ /_/ \n" +
                 "                                          \n");
         ConsoleLoger.info("当前服务器版本：" + VersionChecker.getVersion());
-        getServer().getConsoleSender().sendMessage("§9§l[*] §r加载完毕,当前版本 : 1.1a");
+        getServer().getConsoleSender().sendMessage("§9§l[*] §r加载完毕,当前版本 : 1.1b");
 
         try {for (int i = 0;i < Guns.size();i++) {
             gun gun = Guns.get(i);
