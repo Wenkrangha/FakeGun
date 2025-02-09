@@ -74,8 +74,8 @@ public class loadgun {
             minimachinegun.setReloadtime(3);
             minimachinegun.setRepice(new ItemStack(Material.GOLD_INGOT));
             minimachinegun.setGuneed(1);
-            minimachinegun.setSpeed(3);
-            minimachinegun.setDamage(15);
+            minimachinegun.setSpeed(4);
+            minimachinegun.setDamage(7);
             minimachinegun.load();
         }
         if (true) {
@@ -102,13 +102,13 @@ public class loadgun {
             gun minimachinegun = new gun();
             minimachinegun.setName("§9§l步§r枪");
             minimachinegun.setItemStack(itemStack);
-            minimachinegun.setAtBack(4);
+            minimachinegun.setAtBack(3);
             minimachinegun.setKeeps(20);
             minimachinegun.setTicks(15);
             minimachinegun.setGuneed(2);
             minimachinegun.setReloadtime(3);
-            minimachinegun.setSpeed(3);
-            minimachinegun.setDamage(15);
+            minimachinegun.setSpeed(6);
+            minimachinegun.setDamage(12);
             minimachinegun.setRepice(new ItemStack(Material.DIAMOND));
             minimachinegun.load();
         }
@@ -136,14 +136,14 @@ public class loadgun {
             gun minimachinegun = new gun();
             minimachinegun.setName("§9§l重型§r步枪");
             minimachinegun.setItemStack(itemStack);
-            minimachinegun.setAtBack(6);
+            minimachinegun.setAtBack(4);
             minimachinegun.setKeeps(40);
             minimachinegun.setRepice(new ItemStack(Material.TNT_MINECART));
             minimachinegun.setTicks(93);
             minimachinegun.setReloadtime(4);
             minimachinegun.setSpeed(3);
             minimachinegun.setGuneed(2);
-            minimachinegun.setDamage(40);
+            minimachinegun.setDamage(17);
             minimachinegun.load();
         }
     }

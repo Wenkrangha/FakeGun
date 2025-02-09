@@ -1,25 +1,31 @@
 package com.wenkrang.fakegun.command;
 
+import com.google.common.base.Function;
 import com.wenkrang.fakegun.FakeGun;
 import com.wenkrang.fakegun.gun;
 import com.wenkrang.lib.SpigotConsoleColors;
 import com.wenkrang.lib.shootest;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.*;
 
 
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
@@ -28,11 +34,40 @@ import javax.swing.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
+
+import static com.wenkrang.fakegun.command.data.bar1;
+import static com.wenkrang.fakegun.command.data.set1;
+import static com.wenkrang.fakegun.command.data.bar2;
+import static com.wenkrang.fakegun.command.data.set2;
+
 
 public class fg implements CommandExecutor {
 
+    /**
+     * 给玩家装备指定颜色的皮革帽子
+     * @param player 目标玩家
+     * @param color 颜色（使用 org.bukkit.Color）
+     */
+    public static void giveColoredLeatherHat(Player player, Color color) {
+        // 创建皮革头盔
+        ItemStack hat = new ItemStack(Material.LEATHER_HELMET);
 
+        // 获取并转换物品元数据
+        LeatherArmorMeta meta = (LeatherArmorMeta) hat.getItemMeta();
+
+
+        // 设置颜色
+        if (meta != null) {
+            meta.setUnbreakable(true);
+            meta.setColor(color);
+            hat.setItemMeta(meta);
+        }
+        // 给玩家装备头盔
+        player.getInventory().setHelmet(hat);
+        player.updateInventory(); // 更新玩家库存
+    }
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
 
@@ -182,7 +217,104 @@ public class fg implements CommandExecutor {
 //                    player.getInventory().addItem(itemStack);
 //                }
 //            }
-
+//            if (strings[0].equalsIgnoreCase("red"))
+//                if (commandSender instanceof Player)
+//                    data.red.add((Player) commandSender);
+//
+//            if (strings[0].equalsIgnoreCase("blue"))
+//                if (commandSender instanceof Player)
+//                    data.blue.add((Player) commandSender);
+//            Function<String, Villager> stringSheepFunction = (String name) -> {
+//                // 假设 location 是生成羊的位置（例如玩家位置）
+//                Player player = (Player) commandSender;
+//                Location location = player.getLocation();
+//                double targetHealth = 200.0; // 指定的目标血量
+//
+//                // 生成羊并设置血量
+//                Villager sheep = (Villager) player.getNearbyEntities(5, 5, 5).stream().filter(i -> i instanceof Villager).findFirst().get();
+//                sheep.setAI(false);
+//
+//                AttributeInstance maxHealth = sheep.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+//                // 设置最大血量（使用属性系统，兼容新版）
+//                maxHealth.setBaseValue(targetHealth);
+//
+//                // 设置当前血量
+//                sheep.setHealth(targetHealth);
+//
+//                sheep.setCustomName(name); // 使用§c红色
+//                sheep.setCustomNameVisible(true); // 始终显示名称
+//                return sheep;
+//            };
+//            Function<String, Zombie> stringSheepFunction2 = (String name) -> {
+//                // 假设 location 是生成羊的位置（例如玩家位置）
+//                Player player = (Player) commandSender;
+//                Location location = player.getLocation();
+//                double targetHealth = 500.0; // 指定的目标血量
+//
+//                // 生成羊并设置血量
+//                Zombie sheep = (Zombie) player.getNearbyEntities(5, 5, 5).stream().filter(i -> i instanceof Zombie).findFirst().get();
+//                sheep.setAI(false);
+//
+//                AttributeInstance maxHealth = sheep.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+//                // 设置最大血量（使用属性系统，兼容新版）
+//                maxHealth.setBaseValue(targetHealth);
+//
+//                // 设置当前血量
+//                sheep.setHealth(targetHealth);
+//
+//                sheep.setCustomName(name); // 使用§c红色
+//                sheep.setCustomNameVisible(true); // 始终显示名称
+//                return sheep;
+//            };
+//
+//            if (strings[0].equalsIgnoreCase("set1")) {
+//                set1 = stringSheepFunction.apply("村民");
+//                bar1 = Bukkit.createBossBar("村民的血量", BarColor.RED, BarStyle.SEGMENTED_10);
+//                new BukkitRunnable() {
+//                    @Override
+//                    public void run() {
+//                        Bukkit.getOnlinePlayers().forEach(i -> {
+//                            if (!bar1.getPlayers().contains(i)) bar1.addPlayer(i);
+//                        });
+//                        bar1.setProgress(set1.getHealth() * 0.005);
+//                        if (set1.getHealth() == 0) {
+//                            bar1.removeAll();
+//                        }
+//                    }
+//                }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, 5);
+//            }
+//            if (strings[0].equalsIgnoreCase("set2")) {
+//                set2 = stringSheepFunction2.apply("僵尸");
+//            }
+//            if (strings[0].equalsIgnoreCase("part2")) {
+//                bar2 = Bukkit.createBossBar("僵尸的血量", BarColor.BLUE, BarStyle.SEGMENTED_10);
+//                new BukkitRunnable() {
+//                    @Override
+//                    public void run() {
+//                        Bukkit.getOnlinePlayers().forEach(i -> {
+//                            if (!bar2.getPlayers().contains(i)) bar2.addPlayer(i);
+//                        });
+//                        bar2.setProgress(set2.getHealth() * 0.005);
+//                        if (set2.getHealth() == 0) {
+//                            bar2.removeAll();
+//                        }
+//                    }
+//                }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, 5);
+//            }
+//            if  (strings[0].equalsIgnoreCase("start")) {
+//                if (commandSender instanceof Player) {
+//                    new BukkitRunnable() {
+//                        @Override
+//                        public void run() {
+//                            if (set2.isDead()) cancel();
+//                            Location location = new Location(set2.getWorld(),0, 100 ,0);
+//                            for (int i = 0;i < 5;i++){
+//                                location.getWorld().spawn(location, Zombie.class);
+//                            }
+//                        }
+//                    }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0 ,200);
+//                }
+//            }
         }
 
         return true;

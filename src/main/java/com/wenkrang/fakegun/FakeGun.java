@@ -1,5 +1,6 @@
 package com.wenkrang.fakegun;
 
+import com.wenkrang.fakegun.command.PlayerDeath;
 import com.wenkrang.fakegun.command.fg;
 import com.wenkrang.fakegun.command.fgTabComplete;
 import com.wenkrang.fakegun.event.*;
@@ -36,6 +37,7 @@ public final class FakeGun extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ArrowStopDetector(), this);
         getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
         getServer().getPluginManager().registerEvents(new PlayerClick(), this);
+//        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
         this.getCommand("fg").setExecutor(new fg());
         this.getCommand("fg").setTabCompleter(new fgTabComplete());
