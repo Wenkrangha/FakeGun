@@ -1,6 +1,6 @@
 package com.wenkrang.fakegun.loader;
 
-import com.wenkrang.fakegun.gun;
+import com.wenkrang.fakegun.Gun;
 import com.wenkrang.lib.SpigotConsoleColors;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
-public class loadgun {
+public class LoadGun {
     public static void load() {
         if (true) {
             ItemStack itemStack = new ItemStack(Material.CROSSBOW);
@@ -31,7 +31,7 @@ public class loadgun {
 // 应用元数据
             itemStack.setItemMeta(crossbowMeta);
 
-            gun minimachinegun = new gun();
+            Gun minimachinegun = new Gun();
             minimachinegun.setName("§9§l突击§r步枪");
             minimachinegun.setItemStack(itemStack);
             minimachinegun.setAtBack(1);
@@ -65,7 +65,7 @@ public class loadgun {
 // 应用元数据
             itemStack.setItemMeta(crossbowMeta);
 
-            gun minimachinegun = new gun();
+            Gun minimachinegun = new Gun();
             minimachinegun.setName("§9§l全自动§r轻机枪");
             minimachinegun.setItemStack(itemStack);
             minimachinegun.setAtBack(2);
@@ -99,7 +99,7 @@ public class loadgun {
 // 应用元数据
             itemStack.setItemMeta(crossbowMeta);
 
-            gun minimachinegun = new gun();
+            Gun minimachinegun = new Gun();
             minimachinegun.setName("§9§l步§r枪");
             minimachinegun.setItemStack(itemStack);
             minimachinegun.setAtBack(3);
@@ -133,7 +133,7 @@ public class loadgun {
 // 应用元数据
             itemStack.setItemMeta(crossbowMeta);
 
-            gun minimachinegun = new gun();
+            Gun minimachinegun = new Gun();
             minimachinegun.setName("§9§l重型§r步枪");
             minimachinegun.setItemStack(itemStack);
             minimachinegun.setAtBack(4);

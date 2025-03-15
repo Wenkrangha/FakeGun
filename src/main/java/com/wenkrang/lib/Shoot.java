@@ -1,7 +1,7 @@
 package com.wenkrang.lib;
 
 import com.wenkrang.fakegun.FakeGun;
-import com.wenkrang.fakegun.gun;
+import com.wenkrang.fakegun.Gun;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -11,10 +11,10 @@ import org.bukkit.util.Vector;
 import java.util.List;
 import java.util.Random;
 
-import static com.wenkrang.fakegun.event.fire.applyRecoil;
+import static com.wenkrang.fakegun.event.Fire.applyRecoil;
 
-public class shootest {
-    public static void run (Player player, gun gun) {
+public class Shoot {
+    public static void run (Player player, Gun gun) {
         Item item = player.getWorld().spawn(player.getEyeLocation(), Item.class);
 
         ItemStack itemStack2 = new ItemStack(Material.IRON_NUGGET);
@@ -47,7 +47,7 @@ public class shootest {
                         if (entity instanceof Damageable && !entity.equals(player)) {
                             Damageable damageable = (Damageable) entity;
                             damageable.damage(new Random().nextInt(2) + gun.getDamage(), player);
-                            applyRecoil((LivingEntity) damageable, 0.3, 0.1);
+                            applyRecoil((LivingEntity) damageable, player.getEyeLocation().getDirection(), 0.3, 0.1);
                             Location location1 = damageable.getLocation();
                             location1.setY(location1.getBlockY() + 1);
                             damageable.getWorld().spawnParticle(Particle.BLOCK_CRACK, location1, gun.getDamage() * 12, Bukkit.createBlockData(Material.REDSTONE_BLOCK));

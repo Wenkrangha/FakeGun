@@ -2,7 +2,7 @@ package com.wenkrang.fakegun;
 
 import org.bukkit.inventory.ItemStack;
 
-public class gun {
+public class Gun {
     public String name;
     public int ticks;
     public int Keeps;
@@ -98,8 +98,8 @@ public class gun {
         FakeGun.Guns.add(this);
     }
 
-    public static gun getgun(String name) {
-        for (gun agun : FakeGun.Guns) {
+    public static Gun getgun(String name) {
+        for (Gun agun : FakeGun.Guns) {
             if (agun.getName().equalsIgnoreCase(name)) {
                 return agun;
             }

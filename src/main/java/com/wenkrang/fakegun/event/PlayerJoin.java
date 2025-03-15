@@ -1,7 +1,7 @@
 package com.wenkrang.fakegun.event;
 
 import com.wenkrang.fakegun.FakeGun;
-import com.wenkrang.fakegun.gun;
+import com.wenkrang.fakegun.Gun;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -62,7 +62,7 @@ public class PlayerJoin implements Listener {
                 }
                 if (!event.getPlayer().getScoreboardTags().contains("FireNow")) {
 
-                    if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null && !event.getPlayer().getScoreboardTags().contains("reload")) {
+                    if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && Gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null && !event.getPlayer().getScoreboardTags().contains("reload")) {
                         Damageable damageable = (Damageable) event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
 
 //                        event.getPlayer().addScoreboardTag("reload");
@@ -80,9 +80,9 @@ public class PlayerJoin implements Listener {
 
                                 if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && event.getPlayer().getInventory().getItemInOffHand().getItemMeta() != null) {
                                     Damageable damageable1 = (Damageable) event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
-                                    if (event.getPlayer().isOnline() && !event.getPlayer().getScoreboardTags().contains("FireNow") && event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null && damageable1.getDamage() != 0) {
+                                    if (event.getPlayer().isOnline() && !event.getPlayer().getScoreboardTags().contains("FireNow") && event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && Gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null && damageable1.getDamage() != 0) {
 
-                                        gun getgun = gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName());
+                                        Gun getgun = Gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName());
                                         ItemStack itemInOFFHand = event.getPlayer().getInventory().getItemInOffHand();
 
                                         if (getgun.getGuneed() == 1) {
@@ -98,8 +98,8 @@ public class PlayerJoin implements Listener {
                                                         }
                                                     }
 
-                                                    for (int i = 0; i < gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()).getReloadtime(); i++) {
-                                                        if (event.getPlayer().isOnline() && !event.getPlayer().getScoreboardTags().contains("FireNow") && event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null && damageable1.getDamage() != 0) {
+                                                    for (int i = 0; i < Gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()).getReloadtime(); i++) {
+                                                        if (event.getPlayer().isOnline() && !event.getPlayer().getScoreboardTags().contains("FireNow") && event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && Gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null && damageable1.getDamage() != 0) {
 
                                                             damageable1.setDamage(damageable1.getDamage() - 1);
                                                             ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
@@ -128,8 +128,8 @@ public class PlayerJoin implements Listener {
                                                         }
                                                     }
 
-                                                    for (int i = 0; i < gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()).getReloadtime(); i++) {
-                                                        if (event.getPlayer().isOnline() && !event.getPlayer().getScoreboardTags().contains("FireNow") && event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null && damageable1.getDamage() != 0) {
+                                                    for (int i = 0; i < Gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()).getReloadtime(); i++) {
+                                                        if (event.getPlayer().isOnline() && !event.getPlayer().getScoreboardTags().contains("FireNow") && event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && Gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null && damageable1.getDamage() != 0) {
 
                                                             damageable1.setDamage(damageable1.getDamage() - 1);
                                                             ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();

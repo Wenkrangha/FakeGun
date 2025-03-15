@@ -1,7 +1,6 @@
 package com.wenkrang.fakegun.event.book;
 
 import com.wenkrang.fakegun.FakeGun;
-import com.wenkrang.fakegun.gun;
 import com.wenkrang.lib.SpigotConsoleColors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

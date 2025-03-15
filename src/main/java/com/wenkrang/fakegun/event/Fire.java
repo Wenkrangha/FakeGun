@@ -1,13 +1,10 @@
 package com.wenkrang.fakegun.event;
 
 import com.wenkrang.fakegun.FakeGun;
-import com.wenkrang.fakegun.gun;
-import com.wenkrang.lib.CollisionChecker;
-import com.wenkrang.lib.NearestBlockFinder;
+import com.wenkrang.fakegun.Gun;
 import com.wenkrang.lib.SpigotConsoleColors;
-import com.wenkrang.lib.shootest;
+import com.wenkrang.lib.Shoot;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -19,31 +16,29 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.BlockIterator;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.*;
 import java.util.function.Predicate;
 
-public class fire implements Listener {
+public class Fire implements Listener {
 
     private static final Random RANDOM = new Random();
 
 
     /**
-     * 对玩家施加向其视角后方的随机速度以模拟后坐力
-     * @param player 目标玩家
+     * 对玩家施加指定向量的随机速度以模拟后坐力
+     * @param livingEntity 目标生物
+     * @param direction 指定的向量
      * @param baseRecoil 后坐力的基本力度（可以调整）
      * @param randomness 随机性系数（越大则波动越大）
      */
-    public static void applyRecoil(LivingEntity player, double baseRecoil, double randomness) {
-        Vector viewDirection = player.getEyeLocation().getDirection(); // 获取玩家视角方向
-        Vector baseVector = viewDirection.multiply(-baseRecoil); // 反转方向并乘以后坐力基本力度
+    public static void applyRecoil(LivingEntity livingEntity,Vector direction, double baseRecoil, double randomness) {
+        Vector baseVector = direction.multiply(-baseRecoil); // 反转方向并乘以后坐力基本力度
 
         Vector randomVector = new Vector(
                 RANDOM.nextGaussian() * randomness,
@@ -51,15 +46,16 @@ public class fire implements Listener {
                 RANDOM.nextGaussian() * randomness
         );
         Vector totalRecoil = baseVector.add(randomVector);
-
-        player.setVelocity(player.getVelocity().add(totalRecoil)); // 添加后坐力到玩家当前速度
+        livingEntity.setVelocity(livingEntity.getVelocity().add(totalRecoil)); // 添加后坐力到玩家当前速度
     }
+
     /**
      * 对玩家施加向其视角后方的随机速度以模拟后坐力
      * @param player 目标玩家
      * @param baseRecoil 后坐力的基本力度（可以调整）
      * @param randomness 随机性系数（越大则波动越大）
      */
+    @Deprecated
     public static void applyRecoilNotY(LivingEntity player, double baseRecoil, double randomness) {
         Vector viewDirection = player.getEyeLocation().getDirection(); // 获取玩家视角方向
         Vector baseVector = viewDirection.multiply(-baseRecoil); // 反转方向并乘以后坐力基本力度
@@ -78,11 +74,9 @@ public class fire implements Listener {
      * 对玩家视角进行随机抖动
      * @param player 目标玩家
      * @param pitchRandomness 上下视角抖动的最大幅度
-     * @param yawRandomness 左右视角抖动的最大幅度
      */
-    public static void applyViewShake(Player player, float pitchRandomness, float yawRandomness) {
+    public static void applyViewShake(Player player, float pitchRandomness) {
         float pitchChange = RANDOM.nextInt(3) * pitchRandomness;
-//        float yawChange = (RANDOM.nextFloat() * 2 - 1) * yawRandomness;
         float yawChange = 0;
         player.setRotation(player.getLocation().getYaw() + yawChange, player.getLocation().getPitch() - pitchChange);
     }
@@ -130,78 +124,16 @@ public class fire implements Listener {
                 return blockLocation.clone().add(getOffsetForFace(face));
         }
     }
-    public static double getDistance(Location loc1, Location loc2) {
-        // 获取两者之间的XYZ差值
-        double dx = loc1.getX() - loc2.getX();
-        double dy = loc1.getY() - loc2.getY();
-        double dz = loc1.getZ() - loc2.getZ();
-
-        // 使用三维空间中两点间的欧几里得距离公式计算距离
-        return Math.sqrt(dx * dx + dy * dy + dz * dz);
-    }
-    /**
-     * 根据玩家的视角生成弹道粒子效果。
-     *
-     * @param player 玩家实体
-     * @param particleType 粒子类型
-     * @param distanceBetweenParticles 每两个粒子间的距离
-     * @param maxDistance 最大弹道距离
-     */
-    public static void generateParticleTrajectory(Player player, Particle particleType, double distanceBetweenParticles, double maxDistance) {
-        // 获取玩家当前位置
-        Location eyeLocation = player.getEyeLocation();
-
-        // 获取玩家视线方向的单位向量
-        Vector direction = eyeLocation.getDirection().normalize();
-
-        // 射程内每隔一定距离生成粒子
-        for (double i = distanceBetweenParticles; i <= maxDistance; i += distanceBetweenParticles) {
-            Location particleLocation = eyeLocation.clone().add(direction.clone().multiply(i));
-
-            // 在计算的位置生成粒子
-            particleLocation.getWorld().spawnParticle(Particle.SMOKE_NORMAL, particleLocation, 3, 0.1, 0.1, 0.1, 0);
-        }
-    }
-
-
-
 
     @EventHandler
     public static void OnFire(PlayerInteractEvent event) {
-//
-//        ItemStack itemStack = new ItemStack(Material.CROSSBOW);
-//        ItemMeta itemMeta = itemStack.getItemMeta();
-//        itemMeta.setDisplayName("§9§l突击§r步枪");
-//        ArrayList<String> lore = new ArrayList<>();
-//        lore.add(SpigotConsoleColors.WHITE + "你爷用的老年机枪，速度不是\"很快\"");
-//        lore.add(" ");
-//        lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
-//        itemMeta.setLore(lore);
-//        // 获取弩的元数据
-//        CrossbowMeta crossbowMeta = (CrossbowMeta) itemMeta;
-//
-//// 设置弩的属性
-//        crossbowMeta.addChargedProjectile(new ItemStack(Material.ARROW)); // 设置弩的射出物为烟花火箭
-//
-//// 应用元数据
-//        itemStack.setItemMeta(crossbowMeta);
-//
-//        ItemStack itemStack1 = new ItemStack(Material.CROSSBOW);
-//        ItemMeta itemMeta1 = itemStack1.getItemMeta();
-//        itemMeta1.setDisplayName(SpigotConsoleColors.DARK_YELLOW + "不自动" + SpigotConsoleColors.BOLD + "防空炮");
-//        ArrayList<String> lore1 = new ArrayList<>();
-//        lore1.add(SpigotConsoleColors.WHITE + "十防九空");//你改一下（a awa
-//        //9
-//        lore1.add(" ");
-//        lore1.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
-//        itemMeta1.setLore(lore1);
-//        itemStack1.setItemMeta(itemMeta1);
-
+        int MAX_DURABILITY = 465;
+        ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         if ((event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && event.getHand().equals(EquipmentSlot.HAND)) {
-            if (event.getPlayer().getInventory().getItemInOffHand().getItemMeta() != null && gun.getgun(event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName()) != null) {
+            if (event.getPlayer().getInventory().getItemInOffHand().getItemMeta() != null && Gun.getgun(event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName()) != null) {
                 event.setCancelled(true);
             }
-            if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null) {
+            if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && Gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null) {
 
                 Set<String> scoreboardTags = event.getPlayer().getScoreboardTags();
                 //检查这个Set<String>里面有没有叫FireNow的标签
@@ -210,9 +142,9 @@ public class fire implements Listener {
                 } else {
 
 
-                    org.bukkit.inventory.meta.Damageable damageable = (org.bukkit.inventory.meta.Damageable) event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
+                    org.bukkit.inventory.meta.Damageable damageable = (org.bukkit.inventory.meta.Damageable) itemInMainHand.getItemMeta();
 
-                    if (damageable.getDamage() <= 465 - gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()).getTicks()) {
+                    if (damageable.getDamage() <= MAX_DURABILITY - Gun.getgun(itemInMainHand.getItemMeta().getDisplayName()).getTicks()) {
                         //添加这个标签
                         event.getPlayer().addScoreboardTag("FireNow");
                         new BukkitRunnable() {
@@ -223,20 +155,16 @@ public class fire implements Listener {
                                     if (event.getPlayer().getScoreboardTags().contains("keeping")) {
                                         cancel();
                                     }
-                                    gun getgun = gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName());
+                                    Gun getgun = Gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName());
                                     org.bukkit.inventory.meta.Damageable damageable1 = (org.bukkit.inventory.meta.Damageable) event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
-                                    if (event.getPlayer().isOnline() && event.getPlayer().getScoreboardTags().contains("FireNow") && gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null && !event.getPlayer().getScoreboardTags().contains("reload") && !event.getPlayer().getScoreboardTags().contains("keeping")) {
-                                        if (damageable1.getDamage() <= 465 - gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()).getTicks()) {
+                                    if (event.getPlayer().isOnline() && event.getPlayer().getScoreboardTags().contains("FireNow") && Gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()) != null && !event.getPlayer().getScoreboardTags().contains("reload") && !event.getPlayer().getScoreboardTags().contains("keeping")) {
+                                        if (damageable1.getDamage() <= MAX_DURABILITY - Gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()).getTicks()) {
                                             Player player = event.getPlayer();
-
-//                                    applyRecoilNotY(player, 0.01, 0.1);
-
-
                                             new BukkitRunnable() {
 
                                                 @Override
                                                 public void run() {
-                                                    shootest.run(player, getgun);
+                                                    Shoot.run(player, getgun);
                                                 }
                                             }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 0);
                                             damageable1.setDamage(damageable1.getDamage() + getgun.getTicks());
@@ -247,53 +175,18 @@ public class fire implements Listener {
                                             player.getWorld().playEffect(player.getLocation(), Effect.ANVIL_LAND, 1, 50);
                                             player.getWorld().playEffect(player.getLocation(), Effect.CLICK1, 1, 50);
                                             player.getWorld().spawnParticle(Particle.FLAME, player.getLocation(), 3);
-                                            Sound arrowHitSound = Sound.ENTITY_ARROW_HIT;
-
-                                            // 创建一个箭实体
                                             Predicate<Entity> entityFilter = entity -> !(entity.equals(player));
-                                            RayTraceResult rayTraceResult = null;
+                                            RayTraceResult rayTraceResult;
                                             rayTraceResult = player.getWorld().rayTrace(player.getEyeLocation(), player.getEyeLocation().getDirection(), 128, FluidCollisionMode.ALWAYS, true, 1.2, entityFilter);
-//                                            generateParticleTrajectory(player, Particle.FLAME, 2, 64);
                                             if (rayTraceResult != null) {
-//                                                if (rayTraceResult.getHitEntity() != null && rayTraceResult.getHitEntity() instanceof Damageable) {
-//                                                    try {
-//
-//
-//                                                        Damageable hitEntity = (Damageable) rayTraceResult.getHitEntity();
-//                                                        hitEntity.damage(new Random().nextInt(5) + 2);
-//
-//                                                        // 获取玩家当前朝向的方向向量
-//
-//
-//                                                        // 给实体添加后坐力速度
-//                                                        // 给方向向量添加一个垂直于玩家视角的小幅反向速度
-//                                                        applyRecoil((LivingEntity) hitEntity, 0.3, 0.1);
-//
-//
-//                                                        Location location1 = hitEntity.getLocation();
-//                                                        location1.setY(location1.getBlockY() + 1);
-//
-////                                                        hitEntity.getWorld().spawnParticle(Particle.BLOCK_CRACK, location1, getgun.getDamage() * 12, Bukkit.createBlockData(Material.REDSTONE_BLOCK));
-//                                                        hitEntity.getWorld().playSound(hitEntity.getLocation(), arrowHitSound, 1.0F, 1.0F);
-//                                                    } catch (Exception e) {
-//                                                        throw new RuntimeException(e);
-//                                                    }
-//                                                }else {
                                                 if (rayTraceResult.getHitBlock() != null) {
-
-
                                                     Location location5 = calculateParticleLocation(rayTraceResult.getHitBlock().getLocation(), rayTraceResult.getHitBlockFace());
-
                                                     rayTraceResult.getHitBlock().getWorld().spawnParticle(Particle.BLOCK_CRACK, location5, 10, rayTraceResult.getHitBlock().getBlockData());
-
-
                                                 }
-
                                             }
-
                                         }
                                         if (!event.getPlayer().isSneaking()) {
-                                            applyViewShake(event.getPlayer(), getgun.getAtBack(), 0F);
+                                            applyViewShake(event.getPlayer(), getgun.getAtBack());
                                         }
 
 
@@ -329,7 +222,7 @@ public class fire implements Listener {
                                 }
 
                             }
-                        }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()).getSpeed());
+                        }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, Gun.getgun(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName()).getSpeed());
                     }
 
                 }
@@ -340,14 +233,13 @@ public class fire implements Listener {
             }
 
 //防空炮
-            if (event.getPlayer().getInventory().getItemInMainHand().getItemMeta() != null && event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器"))  {
+            if (itemInMainHand.getItemMeta() != null && itemInMainHand.getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器"))  {
                 if (!event.getPlayer().getScoreboardTags().contains("FireNow")) {
                     event.getPlayer().addScoreboardTag("FireNow");
 
-                    org.bukkit.inventory.meta.Damageable damageable = (org.bukkit.inventory.meta.Damageable) event.getPlayer().getInventory().getItemInMainHand().getItemMeta();
+                    org.bukkit.inventory.meta.Damageable damageable = (org.bukkit.inventory.meta.Damageable) itemInMainHand.getItemMeta();
                     if (damageable.getDamage() == 0) {
-                        damageable.setDamage(465);
-                        ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
+                        damageable.setDamage(MAX_DURABILITY);
                         itemInMainHand.setItemMeta(damageable);
                         event.getPlayer().getInventory().setItemInMainHand(itemInMainHand);
 
@@ -471,7 +363,7 @@ public class fire implements Listener {
                         item.remove();
                     }
                 }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 100);
-                ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
+                itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
                 if (itemInMainHand.getAmount() > 0) {
                     itemInMainHand.setAmount(itemInMainHand.getAmount() - 1);
                 } else if (itemInMainHand.getAmount() == 0){

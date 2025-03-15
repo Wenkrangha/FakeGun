@@ -1,12 +1,11 @@
 package com.wenkrang.fakegun;
 
-import com.wenkrang.fakegun.command.PlayerDeath;
 import com.wenkrang.fakegun.command.fg;
 import com.wenkrang.fakegun.command.fgTabComplete;
 import com.wenkrang.fakegun.event.*;
 import com.wenkrang.fakegun.event.book.PlayerClick;
 import com.wenkrang.fakegun.event.book.PlayerInteract;
-import com.wenkrang.fakegun.loader.loadgun;
+import com.wenkrang.fakegun.loader.LoadGun;
 import com.wenkrang.lib.ConsoleLoger;
 import com.wenkrang.lib.Loader;
 import com.wenkrang.lib.SpigotConsoleColors;
@@ -23,25 +22,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 
-import static org.bukkit.Bukkit.getServer;
-
 public final class FakeGun extends JavaPlugin {
-    public static ArrayList<gun> Guns = new ArrayList<>();
+    public static ArrayList<Gun> Guns = new ArrayList<>();
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getServer().getPluginManager().registerEvents(new fire(), this);
+        getServer().getPluginManager().registerEvents(new Fire(), this);
         getServer().getPluginManager().registerEvents(new PlayerItemHeld(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new ArrowStopDetector(), this);
         getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
         getServer().getPluginManager().registerEvents(new PlayerClick(), this);
-//        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
         this.getCommand("fg").setExecutor(new fg());
         this.getCommand("fg").setTabCompleter(new fgTabComplete());
-        loadgun.load();
+        LoadGun.load();
         Loader.run();
 
         Bukkit.getServer().getConsoleSender().sendMessage("\n" +
@@ -55,7 +51,7 @@ public final class FakeGun extends JavaPlugin {
         getServer().getConsoleSender().sendMessage("§9§l[*] §r加载完毕,当前版本 : 1.1b");
 
         try {for (int i = 0;i < Guns.size();i++) {
-            gun gun = Guns.get(i);
+            Gun gun = Guns.get(i);
             NamespacedKey namespacedKey = new NamespacedKey(this, "Gun" + String.valueOf(i));
             ShapedRecipe shapedRecipe = new ShapedRecipe(namespacedKey, gun.getItemStack())
                     .shape("   ", "rty", " i ")

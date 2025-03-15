@@ -1,7 +1,7 @@
 package com.wenkrang.fakegun.event.book;
 
 import com.wenkrang.fakegun.FakeGun;
-import com.wenkrang.fakegun.gun;
+import com.wenkrang.fakegun.Gun;
 import com.wenkrang.lib.SpigotConsoleColors;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -20,8 +20,8 @@ public class PlayerClick implements Listener {
     @EventHandler
     public static void onclick(InventoryClickEvent event) {
         if (event.getView().getTitle().equalsIgnoreCase("寄枪配方主页")) {
-            if (event.getInventory().getItem(event.getRawSlot()).getItemMeta() != null && gun.getgun(event.getInventory().getItem(event.getRawSlot()).getItemMeta().getDisplayName()) != null) {
-                gun getgun = gun.getgun(event.getInventory().getItem(event.getRawSlot()).getItemMeta().getDisplayName());
+            if (event.getInventory().getItem(event.getRawSlot()).getItemMeta() != null && Gun.getgun(event.getInventory().getItem(event.getRawSlot()).getItemMeta().getDisplayName()) != null) {
+                Gun getgun = Gun.getgun(event.getInventory().getItem(event.getRawSlot()).getItemMeta().getDisplayName());
                 Inventory inventory = Bukkit.createInventory(null, 27, "寄枪配方");
                 ItemStack itemStack0 = new ItemStack(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
                 ItemMeta itemMeta0 = itemStack0.getItemMeta();
