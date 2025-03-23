@@ -1,7 +1,5 @@
-package com.wenkrang.lib;
+package com.wenkrang.fakegun;
 
-import com.wenkrang.fakegun.FakeGun;
-import com.wenkrang.fakegun.Gun;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +21,7 @@ public class Shoot {
 
         item.setPickupDelay(1145141919);
 
-        // 设置箭的速度（力度），这里假设是常规速度的两倍
+        // 设置箭的速度（力度），这里假设是常规速度的五倍
         item.setVelocity(player.getLocation().getDirection().multiply(5));
         new BukkitRunnable() {
 
@@ -47,7 +45,7 @@ public class Shoot {
                         if (entity instanceof Damageable && !entity.equals(player)) {
                             Damageable damageable = (Damageable) entity;
                             damageable.damage(new Random().nextInt(2) + gun.getDamage(), player);
-                            applyRecoil((LivingEntity) damageable, player.getEyeLocation().getDirection(), 0.3, 0.1);
+                            applyRecoil((LivingEntity) damageable, player.getLocation().getDirection().multiply(-2), 0.3, 0.1);
                             Location location1 = damageable.getLocation();
                             location1.setY(location1.getBlockY() + 1);
                             damageable.getWorld().spawnParticle(Particle.BLOCK_CRACK, location1, gun.getDamage() * 12, Bukkit.createBlockData(Material.REDSTONE_BLOCK));

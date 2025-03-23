@@ -20,7 +20,7 @@ public class LoadGun {
             lore.add(SpigotConsoleColors.WHITE + "需要子弹  [小口径子弹]");
             lore.add(" ");
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
-            lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手枪 + 主手弹药  " + SpigotConsoleColors.RESET + " 换弹");
+            lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手弹药 + 主手枪  " + SpigotConsoleColors.RESET + " 换弹");
             itemMeta.setLore(lore);
             // 获取弩的元数据
             CrossbowMeta crossbowMeta = (CrossbowMeta) itemMeta;
@@ -54,7 +54,7 @@ public class LoadGun {
             lore.add(" ");
 
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
-            lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手枪 + 主手弹药  " + SpigotConsoleColors.RESET + " 换弹");
+            lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手弹药 + 主手枪  " + SpigotConsoleColors.RESET + " 换弹");
             itemMeta.setLore(lore);
             // 获取弩的元数据
             CrossbowMeta crossbowMeta = (CrossbowMeta) itemMeta;
@@ -88,7 +88,8 @@ public class LoadGun {
             lore.add(" ");
 
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
-            lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手枪 + 主手弹药  " + SpigotConsoleColors.RESET + " 换弹");
+            lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手弹药 + 主手枪  " + SpigotConsoleColors.RESET + " 换弹");
+
             itemMeta.setLore(lore);
             // 获取弩的元数据
             CrossbowMeta crossbowMeta = (CrossbowMeta) itemMeta;
@@ -122,7 +123,7 @@ public class LoadGun {
 
             lore.add(" ");
             lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
-            lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手枪 + 主手弹药  " + SpigotConsoleColors.RESET + " 换弹");
+            lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手弹药 + 主手枪  " + SpigotConsoleColors.RESET + " 换弹");
             itemMeta.setLore(lore);
             // 获取弩的元数据
             CrossbowMeta crossbowMeta = (CrossbowMeta) itemMeta;

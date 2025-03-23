@@ -3,7 +3,7 @@ package com.wenkrang.fakegun.event;
 import com.wenkrang.fakegun.FakeGun;
 import com.wenkrang.fakegun.Gun;
 import com.wenkrang.lib.SpigotConsoleColors;
-import com.wenkrang.lib.Shoot;
+import com.wenkrang.fakegun.Shoot;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.boss.BarColor;
@@ -232,7 +232,7 @@ public class Fire implements Listener {
 
             }
 
-//防空炮
+
             if (itemInMainHand.getItemMeta() != null && itemInMainHand.getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器"))  {
                 if (!event.getPlayer().getScoreboardTags().contains("FireNow")) {
                     event.getPlayer().addScoreboardTag("FireNow");

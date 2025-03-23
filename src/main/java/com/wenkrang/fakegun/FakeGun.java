@@ -39,16 +39,14 @@ public final class FakeGun extends JavaPlugin {
         this.getCommand("fg").setTabCompleter(new fgTabComplete());
         LoadGun.load();
         Loader.run();
-
-        Bukkit.getServer().getConsoleSender().sendMessage("\n" +
-                "    ______      __        ______          \n" +
-                "   / ____/___ _/ /_____  / ____/_  ______ \n" +
-                "  / /_  / __ `/ //_/ _ \\/ / __/ / / / __ \\\n" +
-                " / __/ / /_/ / ,< /  __/ /_/ / /_/ / / / /\n" +
-                "/_/    \\__,_/_/|_|\\___/\\____/\\__,_/_/ /_/ \n" +
-                "                                          \n");
+        Bukkit.getServer().getConsoleSender().sendMessage("    ______      __        ______          ");
+        Bukkit.getServer().getConsoleSender().sendMessage("   / ____/___ _/ /_____  / ____/_  ______ ");
+        Bukkit.getServer().getConsoleSender().sendMessage("  / /_  / __ `/ //_/ _ \\/ / __/ / / / __ \\");
+        Bukkit.getServer().getConsoleSender().sendMessage(" / __/ / /_/ / ,< /  __/ /_/ / /_/ / / / /");
+        Bukkit.getServer().getConsoleSender().sendMessage("/_/    \\__,_/_/|_|\\___/\\____/\\__,_/_/ /_/ ");
+        Bukkit.getServer().getConsoleSender().sendMessage("");
         ConsoleLoger.info("当前服务器版本：" + VersionChecker.getVersion());
-        getServer().getConsoleSender().sendMessage("§9§l[*] §r加载完毕,当前版本 : 1.1b");
+        getServer().getConsoleSender().sendMessage("§9§l[*] §r加载完毕,当前版本 : 1.1c");
 
         try {for (int i = 0;i < Guns.size();i++) {
             Gun gun = Guns.get(i);
@@ -156,6 +154,9 @@ public final class FakeGun extends JavaPlugin {
                         .setIngredient('t', new RecipeChoice.ExactChoice(new ItemStack(Material.FIRE_CHARGE)));
                 getServer().addRecipe(shapedRecipe);
             }
+
+            if (!getServer().getOnlinePlayers().isEmpty())
+                getServer().getOnlinePlayers().stream().forEach(PlayerCheck::StartCheck);
         }catch (Exception e) {
 
         }
