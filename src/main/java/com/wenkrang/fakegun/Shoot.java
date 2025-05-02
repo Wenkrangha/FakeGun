@@ -9,7 +9,7 @@ import org.bukkit.util.Vector;
 import java.util.List;
 import java.util.Random;
 
-import static com.wenkrang.fakegun.event.Fire.applyRecoil;
+import static com.wenkrang.fakegun.event.FireE.applyRecoil;
 
 public class Shoot {
     public static void run (Player player, Gun gun) {

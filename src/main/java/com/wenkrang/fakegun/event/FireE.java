@@ -25,7 +25,7 @@ import org.bukkit.util.Vector;
 import java.util.*;
 import java.util.function.Predicate;
 
-public class Fire implements Listener {
+public class FireE implements Listener {
 
     private static final Random RANDOM = new Random();
 
@@ -125,6 +125,14 @@ public class Fire implements Listener {
         }
     }
 
+    public static void arrowboom (Arrow arrow, Player player) {
+        arrow.getWorld().spawnParticle(Particle.FLAME, arrow.getLocation(), 50);
+        arrow.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, arrow.getLocation(), 60);
+        arrow.getWorld().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, arrow.getLocation(), 60);
+        arrow.getWorld().createExplosion(arrow.getLocation(), 4F);
+        player.removeScoreboardTag("FireNow");
+        arrow.remove();
+    }
     @EventHandler
     public static void OnFire(PlayerInteractEvent event) {
         int MAX_DURABILITY = 465;
@@ -274,14 +282,11 @@ public class Fire implements Listener {
                             @Override
                             public void run() {
                                 //爆炸引线，超时删除
-                                arrow.getWorld().spawnParticle(Particle.FLAME, arrow.getLocation(), 50);
-                                arrow.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, arrow.getLocation(), 60);
-                                arrow.getWorld().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, arrow.getLocation(), 60);
-                                arrow.getWorld().createExplosion(arrow.getLocation(), 4F);
-                                event.getPlayer().removeScoreboardTag("FireNow");
-                                arrow.remove();
+                                if (arrow.isDead()) cancel();
+                                arrowboom(arrow, event.getPlayer());
                             }
                         }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 100);
+
                         new BukkitRunnable() {
 
                             @Override
@@ -291,15 +296,19 @@ public class Fire implements Listener {
                                     @Override
                                     public void run() {
                                         List<Entity> nearbyEntities = arrow.getNearbyEntities(5, 5, 5);
+                                        Location LastTimeLocation = arrow.getLocation();
+                                        new BukkitRunnable() {
+
+                                            @Override
+                                            public void run() {
+                                                Location NowLocation = arrow.getLocation();
+                                                if (LastTimeLocation.getBlockX() == NowLocation.getBlockX() && LastTimeLocation.getBlockY() == NowLocation.getBlockY() && LastTimeLocation.getBlockZ() == NowLocation.getBlockZ()){
+                                                    arrowboom(arrow, event.getPlayer());
+                                                }
+                                            }
+                                        }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 5);
                                         if (!nearbyEntities.isEmpty()) {
-                                            arrow.getWorld().spawnParticle(Particle.FLAME, arrow.getLocation(), 50);
-                                            arrow.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, arrow.getLocation(), 60);
-                                            arrow.getWorld().spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, arrow.getLocation(), 60);
-                                            arrow.getWorld().createExplosion(arrow.getLocation(), 4F);
-                                            event.getPlayer().removeScoreboardTag("FireNow");
-                                            arrow.remove();
-                                            //ok上机实验
-                                            cancel();
+                                            arrowboom(arrow, event.getPlayer());
                                         }
                                     }
                                 }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 0);

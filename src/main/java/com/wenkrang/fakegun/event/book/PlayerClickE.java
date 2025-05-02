@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
-public class PlayerClick implements Listener {
+public class PlayerClickE implements Listener {
     @EventHandler
     public static void onclick(InventoryClickEvent event) {
         if (event.getView().getTitle().equalsIgnoreCase("寄枪配方主页")) {

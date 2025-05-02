@@ -3,8 +3,9 @@ package com.wenkrang.fakegun;
 import com.wenkrang.fakegun.command.fg;
 import com.wenkrang.fakegun.command.fgTabComplete;
 import com.wenkrang.fakegun.event.*;
-import com.wenkrang.fakegun.event.book.PlayerClick;
-import com.wenkrang.fakegun.event.book.PlayerInteract;
+import com.wenkrang.fakegun.event.book.FirstSendBookE;
+import com.wenkrang.fakegun.event.book.PlayerClickE;
+import com.wenkrang.fakegun.event.book.PlayerInteractE;
 import com.wenkrang.fakegun.loader.LoadGun;
 import com.wenkrang.lib.ConsoleLoger;
 import com.wenkrang.lib.Loader;
@@ -28,12 +29,13 @@ public final class FakeGun extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getServer().getPluginManager().registerEvents(new Fire(), this);
-        getServer().getPluginManager().registerEvents(new PlayerItemHeld(), this);
-        getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
-        getServer().getPluginManager().registerEvents(new ArrowStopDetector(), this);
-        getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
-        getServer().getPluginManager().registerEvents(new PlayerClick(), this);
+        getServer().getPluginManager().registerEvents(new FireE(), this);
+        getServer().getPluginManager().registerEvents(new PlayerItemHeldE(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinE(), this);
+        getServer().getPluginManager().registerEvents(new ArrowStopDetectorE(), this);
+        getServer().getPluginManager().registerEvents(new PlayerInteractE(), this);
+        getServer().getPluginManager().registerEvents(new PlayerClickE(), this);
+        getServer().getPluginManager().registerEvents(new FirstSendBookE(), this);
 
         this.getCommand("fg").setExecutor(new fg());
         this.getCommand("fg").setTabCompleter(new fgTabComplete());
