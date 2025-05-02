@@ -26,6 +26,8 @@ import java.util.ArrayList;
 public final class FakeGun extends JavaPlugin {
     public static ArrayList<Gun> Guns = new ArrayList<>();
 
+    public static JavaPlugin PLUGIN;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -39,6 +41,7 @@ public final class FakeGun extends JavaPlugin {
 
         this.getCommand("fg").setExecutor(new fg());
         this.getCommand("fg").setTabCompleter(new fgTabComplete());
+        PLUGIN = this;
         LoadGun.load();
         Loader.run();
         Bukkit.getServer().getConsoleSender().sendMessage("    ______      __        ______          ");
