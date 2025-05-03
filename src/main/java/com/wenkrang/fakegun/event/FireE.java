@@ -2,6 +2,7 @@ package com.wenkrang.fakegun.event;
 
 import com.wenkrang.fakegun.FakeGun;
 import com.wenkrang.fakegun.Gun;
+import com.wenkrang.fakegun.config.Config;
 import com.wenkrang.lib.SpigotConsoleColors;
 import com.wenkrang.fakegun.Shoot;
 import org.bukkit.*;
@@ -23,27 +24,32 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
 public class FireE implements Listener {
 
-    private static final Random RANDOM = new Random();
+    private static final Random RANDOM = ThreadLocalRandom.current();
+
+    private static final float BASE_RECOIL =
+            Float.parseFloat(Config.INSTANCE.get("base-recoil").toString());
+
+    private static final float RANDOMNESS =
+            Float.parseFloat(Config.INSTANCE.get("recoil-randomness").toString());
 
 
     /**
      * 对玩家施加指定向量的随机速度以模拟后坐力
      * @param livingEntity 目标生物
      * @param direction 指定的向量
-     * @param baseRecoil 后坐力的基本力度（可以调整）
-     * @param randomness 随机性系数（越大则波动越大）
      */
-    public static void applyRecoil(LivingEntity livingEntity,Vector direction, double baseRecoil, double randomness) {
-        Vector baseVector = direction.multiply(-baseRecoil); // 反转方向并乘以后坐力基本力度
+    public static void applyRecoil(LivingEntity livingEntity, Vector direction) {
+        Vector baseVector = direction.multiply(BASE_RECOIL * (-1)); // 反转方向并乘以后坐力基本力度
 
         Vector randomVector = new Vector(
-                RANDOM.nextGaussian() * randomness,
-                RANDOM.nextGaussian() * randomness,
-                RANDOM.nextGaussian() * randomness
+                RANDOM.nextGaussian() * RANDOMNESS,
+                RANDOM.nextGaussian() * RANDOMNESS,
+                RANDOM.nextGaussian() * RANDOMNESS
         );
         Vector totalRecoil = baseVector.add(randomVector);
         livingEntity.setVelocity(livingEntity.getVelocity().add(totalRecoil)); // 添加后坐力到玩家当前速度
@@ -52,18 +58,16 @@ public class FireE implements Listener {
     /**
      * 对玩家施加向其视角后方的随机速度以模拟后坐力
      * @param player 目标玩家
-     * @param baseRecoil 后坐力的基本力度（可以调整）
-     * @param randomness 随机性系数（越大则波动越大）
      */
     @Deprecated
-    public static void applyRecoilNotY(LivingEntity player, double baseRecoil, double randomness) {
+    public static void applyRecoilNotY(LivingEntity player) {
         Vector viewDirection = player.getEyeLocation().getDirection(); // 获取玩家视角方向
-        Vector baseVector = viewDirection.multiply(-baseRecoil); // 反转方向并乘以后坐力基本力度
+        Vector baseVector = viewDirection.multiply(-BASE_RECOIL); // 反转方向并乘以后坐力基本力度
 
         Vector randomVector = new Vector(
-                RANDOM.nextGaussian() * randomness,
+                RANDOM.nextGaussian() * RANDOMNESS,
                 0,
-                RANDOM.nextGaussian() * randomness
+                RANDOM.nextGaussian() * RANDOMNESS
         );
         Vector totalRecoil = baseVector.add(randomVector);
 
