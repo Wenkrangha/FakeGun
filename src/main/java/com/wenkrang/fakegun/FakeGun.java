@@ -57,7 +57,7 @@ public final class FakeGun extends JavaPlugin {
 
         try {for (int i = 0;i < Guns.size();i++) {
             Gun gun = Guns.get(i);
-            NamespacedKey namespacedKey = new NamespacedKey(this, "Gun" + String.valueOf(i));
+            NamespacedKey namespacedKey = new NamespacedKey(this, "Gun" + i);
             ShapedRecipe shapedRecipe = new ShapedRecipe(namespacedKey, gun.getItemStack())
                     .shape("   ", "rty", " i ")
                     .setIngredient('r', new RecipeChoice.ExactChoice(gun.getRepice()))
