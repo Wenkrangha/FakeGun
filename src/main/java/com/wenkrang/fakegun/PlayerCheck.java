@@ -3,6 +3,7 @@ package com.wenkrang.fakegun;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Random;
@@ -90,7 +91,7 @@ public class PlayerCheck {
 
                                                             damageable1.setDamage(damageable1.getDamage() - 1);
                                                             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-                                                            itemInMainHand.setItemMeta(damageable1);
+                                                            itemInMainHand.setItemMeta((ItemMeta) damageable1);
                                                             player.getInventory().setItemInMainHand(itemInMainHand);
                                                         } else {
 
@@ -120,7 +121,7 @@ public class PlayerCheck {
 
                                                             damageable1.setDamage(damageable1.getDamage() - 1);
                                                             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-                                                            itemInMainHand.setItemMeta(damageable1);
+                                                            itemInMainHand.setItemMeta((ItemMeta) damageable1);
                                                             player.getInventory().setItemInMainHand(itemInMainHand);
                                                         } else {
                                                             player.removeScoreboardTag("reload");
@@ -162,7 +163,7 @@ public class PlayerCheck {
                                         if (player.isOnline() && !player.getScoreboardTags().contains("FireNow") && player.getInventory().getItemInMainHand().getItemMeta() != null && player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器") && damageable1.getDamage() != 0) {
                                             damageable1.setDamage(damageable1.getDamage() - 1);
                                             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-                                            itemInMainHand.setItemMeta(damageable1);
+                                            itemInMainHand.setItemMeta((ItemMeta) damageable1);
                                             player.getInventory().setItemInMainHand(itemInMainHand);
                                         } else {
                                             player.removeScoreboardTag("reload");

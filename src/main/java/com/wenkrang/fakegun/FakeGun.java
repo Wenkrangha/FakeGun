@@ -26,9 +26,13 @@ import java.util.ArrayList;
 public final class FakeGun extends JavaPlugin {
     public static ArrayList<Gun> Guns = new ArrayList<>();
 
+    public static JavaPlugin PLUGIN;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
+        PLUGIN = this;
+
         getServer().getPluginManager().registerEvents(new FireE(), this);
         getServer().getPluginManager().registerEvents(new PlayerItemHeldE(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinE(), this);
@@ -39,6 +43,7 @@ public final class FakeGun extends JavaPlugin {
 
         this.getCommand("fg").setExecutor(new fg());
         this.getCommand("fg").setTabCompleter(new fgTabComplete());
+
         LoadGun.load();
         Loader.run();
         Bukkit.getServer().getConsoleSender().sendMessage("    ______      __        ______          ");
@@ -52,7 +57,7 @@ public final class FakeGun extends JavaPlugin {
 
         try {for (int i = 0;i < Guns.size();i++) {
             Gun gun = Guns.get(i);
-            NamespacedKey namespacedKey = new NamespacedKey(this, "Gun" + String.valueOf(i));
+            NamespacedKey namespacedKey = new NamespacedKey(this, "Gun" + i);
             ShapedRecipe shapedRecipe = new ShapedRecipe(namespacedKey, gun.getItemStack())
                     .shape("   ", "rty", " i ")
                     .setIngredient('r', new RecipeChoice.ExactChoice(gun.getRepice()))

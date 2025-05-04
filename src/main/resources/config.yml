@@ -1,0 +1,12 @@
+# 语言
+language: zh_CN
+# 配置文件版本（请勿更改！）
+config-version: 0
+# 子弹的速度（相对于玩家速度的倍数）
+bullet-speed: 5
+# 常规子弹的最高伤害加成
+bullet-damage-addition: 1
+# 后坐力
+base-recoil: 0.3
+# 后坐力的随机性系数，越大后坐力波动越大
+recoil-randomness: 0.1
