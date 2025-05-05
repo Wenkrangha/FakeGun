@@ -222,7 +222,7 @@ public class FireE implements Listener {
                                                 public void run() {
                                                     event.getPlayer().removeScoreboardTag("keeping");
                                                 }
-                                            }.runTaskLater(FakeGun.getPlugin(FakeGun.class), getgun.Keeps);
+                                            }.runTaskLater(FakeGun.getPlugin(FakeGun.class), getgun.getKeeps());
                                         }
                                     } else {
                                         if (event.getPlayer().getScoreboardTags().contains("reload")) {
