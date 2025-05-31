@@ -58,8 +58,8 @@ public class Shoot {
                 for (Entity entity : nearbyEntities) {
                     if (entity instanceof Damageable && !entity.equals(player)) {
                         Damageable damageable = (Damageable) entity;
-                        damageable.damage(ThreadLocalRandom.current()
-                                .nextFloat(DAMAGE_ADDITION) + gun.getDamage(), player);
+                        damageable.damage((ThreadLocalRandom.current()
+                                .nextFloat() * DAMAGE_ADDITION) + gun.getDamage(), player);
                         applyRecoil((LivingEntity) damageable, player.getLocation().getDirection().multiply(-2)
                         );
                         Location location1 = damageable.getLocation();

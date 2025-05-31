@@ -14,29 +14,15 @@ public class VersionChecker {
      * @return 如果当前版本低于指定版本则返回true，否则返回false
      */
     public static boolean isVersionBelow(String requiredVersion) {
-        // 获取当前服务器版本
-        String currentVersion = Bukkit.getVersion();
-        // 从Bukkit.getVersion()返回的字符串中提取纯净的版本号，假设版本号位于 "CraftBukkit version git-SomeHash (MC: 1.20.1)" 形式的字符串中
+        String group = getVersion().replace(".","");
 
-        // 定义一个正则表达式来匹配版本号
-        Pattern pattern = Pattern.compile("(\\d+)\\.(\\d+)(?:\\.(\\d+))?");
+        int i = Integer.parseInt(group);
 
-        // 创建一个 matcher 对象
-        Matcher matcher = pattern.matcher(currentVersion);
-
-        while (matcher.find()) {
-            // 使用 matcher.group() 方法来获取匹配的组
-            String group = matcher.group(0).replace(".","");
-            int i = Integer.parseInt(group);
-            if (i < 1000) {
-                i = i * 10;
-            }
-            if (i < Integer.parseInt(requiredVersion.replace(".",""))) {
-                return true;
-            }
+        if (i < 1000) {
+            i = i * 10;
         }
 
-        return false; // 版本相同或高于所需版本
+        return i < Integer.parseInt(requiredVersion.replace(".", ""));
     }
 
     public static String getVersion() {

@@ -5,6 +5,7 @@ import com.wenkrang.fakegun.Gun;
 import com.wenkrang.fakegun.config.Config;
 import com.wenkrang.lib.SpigotConsoleColors;
 import com.wenkrang.fakegun.Shoot;
+import com.wenkrang.lib.VersionChecker;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.boss.BarColor;
@@ -139,7 +140,10 @@ public class FireE implements Listener {
     }
     @EventHandler
     public static void OnFire(PlayerInteractEvent event) {
-        int MAX_DURABILITY = 465;
+        // 在Minecraft Java版1.18中，为匹配基岩版，弩的耐久被修改为465
+        // 此前是326
+        // 见 “https://zh.minecraft.wiki/w/弩”
+        int MAX_DURABILITY = VersionChecker.isVersionBelow("1.18") ? 326 : 465;
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         if ((event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) && event.getHand().equals(EquipmentSlot.HAND)) {
             if (event.getPlayer().getInventory().getItemInOffHand().getItemMeta() != null && Gun.getgun(event.getPlayer().getInventory().getItemInOffHand().getItemMeta().getDisplayName()) != null) {
@@ -222,7 +226,7 @@ public class FireE implements Listener {
                                                 public void run() {
                                                     event.getPlayer().removeScoreboardTag("keeping");
                                                 }
-                                            }.runTaskLater(FakeGun.getPlugin(FakeGun.class), getgun.Keeps);
+                                            }.runTaskLater(FakeGun.getPlugin(FakeGun.class), getgun.getKeeps());
                                         }
                                     } else {
                                         if (event.getPlayer().getScoreboardTags().contains("reload")) {
