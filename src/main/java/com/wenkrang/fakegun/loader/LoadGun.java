@@ -166,7 +166,7 @@ public class LoadGun {
             CrossbowMeta crossbowMeta = (CrossbowMeta) itemMeta;
 
 // 设置弩的属性
-            crossbowMeta.addChargedProjectile(new ItemStack(Material.ARROW));
+            crossbowMeta.addChargedProjectile(new ItemStack(Material.FIREWORK_ROCKET));
 
 // 应用元数据
             itemStack.setItemMeta(crossbowMeta);
