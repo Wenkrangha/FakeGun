@@ -20,7 +20,7 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
-        java-version: '8.0.162+12.openj9-0.8.0'
+        java-version: '8.0.162+12'
         distribution: 'adopt-openj9'
         cache: maven
     - name: Build with Maven
