@@ -20,15 +20,13 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
-        java-version: '8.0.162+12'
+        java-version: '8'
         distribution: 'adopt-openj9'
         cache: maven
     - name: Build with Maven
-      run: |
-        mvn -B package --file pom.xml
-        mv target/FakeGun-*-shaded.jar FakeGun.jar
+      run: mvn -B package --file pom.xml
 
     - uses: actions/upload-artifact@v4
       with:
         name: FakeGun
-        path: FakeGun.jar
+        path: target/FakeGun-*-shaded.jar

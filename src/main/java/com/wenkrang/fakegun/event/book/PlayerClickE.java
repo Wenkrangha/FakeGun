@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class PlayerClickE implements Listener {
     @EventHandler
-    public static void onClick(InventoryClickEvent event) {
+    public static void onclick(InventoryClickEvent event) {
         if (event.getView().getTitle().equalsIgnoreCase("寄枪配方主页")) {
             ItemStack itemStack0 = new ItemStack(Material.LIGHT_BLUE_STAINED_GLASS_PANE);
             ItemMeta itemMeta0 = itemStack0.getItemMeta();

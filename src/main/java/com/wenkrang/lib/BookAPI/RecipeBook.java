@@ -7,7 +7,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 
 public class RecipeBook {
-    public static ItemStack theRecipeBook;
+    public static ItemStack TheRecipeBook;
     static {
         ItemStack itemStack0 = new ItemStack(Material.WRITABLE_BOOK);
         ItemMeta itemMeta0 = itemStack0.getItemMeta();
@@ -20,6 +20,6 @@ public class RecipeBook {
         itemMeta0.setLore(lore0);
         itemStack0.setItemMeta(itemMeta0);
 
-        theRecipeBook = itemStack0;
+        TheRecipeBook = itemStack0;
     }
 }
