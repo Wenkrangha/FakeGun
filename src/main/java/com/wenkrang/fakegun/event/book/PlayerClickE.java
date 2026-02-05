@@ -18,8 +18,19 @@ import java.util.ArrayList;
 
 public class PlayerClickE implements Listener {
     @EventHandler
-    public static void onclick(InventoryClickEvent event) {
+    public static void onClick(InventoryClickEvent event) {
         if (event.getView().getTitle().equalsIgnoreCase("寄枪配方主页")) {
+
+            // 在渲染各种配方前处理创造模式右键操作
+            if (event.isRightClick() &&
+                    event.getWhoClicked().getGameMode().equals(GameMode.CREATIVE) &&
+                    event.getCurrentItem() != null &&
+                    event.getSlot() > 8) {
+                event.getWhoClicked().getInventory().addItem(event.getCurrentItem());
+                event.getWhoClicked().closeInventory();
+                return;
+            }
+            
             if (event.getInventory().getItem(event.getRawSlot()).getItemMeta() != null && Gun.getgun(event.getInventory().getItem(event.getRawSlot()).getItemMeta().getDisplayName()) != null) {
                 Gun getgun = Gun.getgun(event.getInventory().getItem(event.getRawSlot()).getItemMeta().getDisplayName());
                 Inventory inventory = Bukkit.createInventory(null, 27, "寄枪配方");
@@ -66,11 +77,6 @@ public class PlayerClickE implements Listener {
                 inventory.setItem(16, getgun.getItemStack());
 
                 event.getWhoClicked().openInventory(inventory);
-
-                if (event.isRightClick() && event.getWhoClicked().getGameMode().equals(GameMode.CREATIVE)) {
-                    event.getWhoClicked().getInventory().addItem(getgun.getItemStack());
-                    event.getWhoClicked().closeInventory();
-                }
 
             }
             if (event.getInventory().getItem(event.getRawSlot()).getItemMeta() != null && event.getInventory().getItem(event.getRawSlot()).getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器")) {
@@ -139,12 +145,6 @@ public class PlayerClickE implements Listener {
                 inventory.setItem(16, itemStack);
 
                 event.getWhoClicked().openInventory(inventory);
-
-                if (event.isRightClick() && event.getWhoClicked().getGameMode().equals(GameMode.CREATIVE)) {
-                    event.getWhoClicked().getInventory().addItem(itemStack);
-                    event.getWhoClicked().closeInventory();
-                }
-
             }
             if (event.getInventory().getItem(event.getRawSlot()).getItemMeta() != null && event.getInventory().getItem(event.getRawSlot()).getItemMeta().getDisplayName().equalsIgnoreCase("§9§l小口径§r子弹")) {
                 Inventory inventory = Bukkit.createInventory(null, 27, "寄枪配方");
@@ -198,12 +198,6 @@ public class PlayerClickE implements Listener {
                 inventory.setItem(16, itemStack);
 
                 event.getWhoClicked().openInventory(inventory);
-
-                if (event.isRightClick() && event.getWhoClicked().getGameMode().equals(GameMode.CREATIVE)) {
-                    event.getWhoClicked().getInventory().addItem(itemStack);
-                    event.getWhoClicked().closeInventory();
-                }
-
             }
             if (event.getInventory().getItem(event.getRawSlot()).getItemMeta() != null && event.getInventory().getItem(event.getRawSlot()).getItemMeta().getDisplayName().equalsIgnoreCase("§9§l大口径§r子弹")) {
                 Inventory inventory = Bukkit.createInventory(null, 27, "寄枪配方");
@@ -257,12 +251,6 @@ public class PlayerClickE implements Listener {
                 inventory.setItem(16, itemStack);
 
                 event.getWhoClicked().openInventory(inventory);
-
-                if (event.isRightClick() && event.getWhoClicked().getGameMode().equals(GameMode.CREATIVE)) {
-                    event.getWhoClicked().getInventory().addItem(itemStack);
-                    event.getWhoClicked().closeInventory();
-                }
-
             }
 
             if (event.getInventory().getItem(event.getRawSlot()).getItemMeta() != null && event.getInventory().getItem(event.getRawSlot()).getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭§r弹")) {
@@ -317,12 +305,6 @@ public class PlayerClickE implements Listener {
                 inventory.setItem(16, itemStack);
 
                 event.getWhoClicked().openInventory(inventory);
-
-                if (event.isRightClick() && event.getWhoClicked().getGameMode().equals(GameMode.CREATIVE)) {
-                    event.getWhoClicked().getInventory().addItem(itemStack);
-                    event.getWhoClicked().closeInventory();
-                }
-
             }
 
             if (event.getInventory().getItem(event.getRawSlot()).getItemMeta() != null && event.getInventory().getItem(event.getRawSlot()).getItemMeta().getDisplayName().equalsIgnoreCase("§9§l烟雾§r弹")) {
@@ -377,12 +359,6 @@ public class PlayerClickE implements Listener {
                 inventory.setItem(16, itemStack);
 
                 event.getWhoClicked().openInventory(inventory);
-
-                if (event.isRightClick() && event.getWhoClicked().getGameMode().equals(GameMode.CREATIVE)) {
-                    event.getWhoClicked().getInventory().addItem(itemStack);
-                    event.getWhoClicked().closeInventory();
-                }
-
             }
 
 
@@ -391,6 +367,7 @@ public class PlayerClickE implements Listener {
             //21  22  23
             event.setCancelled(true);
         }
+        
         if (event.getView().getTitle().equalsIgnoreCase("寄枪配方")) {
             if (event.getRawSlot() == 1) {
                 Inventory inventory = Bukkit.createInventory(null, 27, "寄枪配方主页");
