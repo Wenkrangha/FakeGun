@@ -181,7 +181,7 @@ public class FireE implements Listener {
                                             }.runTaskLater(FakeGun.getPlugin(FakeGun.class), 0);
                                             damageable1.setDamage(damageable1.getDamage() + getgun.getTicks());
                                             ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
-                                            itemInMainHand.setItemMeta((ItemMeta) damageable1);
+                                            itemInMainHand.setItemMeta(damageable1);
                                             event.getPlayer().getInventory().setItemInMainHand(itemInMainHand);
 
                                             player.getWorld().playEffect(player.getLocation(), Effect.ANVIL_LAND, 1, 50);
@@ -252,7 +252,7 @@ public class FireE implements Listener {
                     org.bukkit.inventory.meta.Damageable damageable = (org.bukkit.inventory.meta.Damageable) itemInMainHand.getItemMeta();
                     if (damageable.getDamage() == 0) {
                         damageable.setDamage(MAX_DURABILITY);
-                        itemInMainHand.setItemMeta((ItemMeta) damageable);
+                        itemInMainHand.setItemMeta(damageable);
                         event.getPlayer().getInventory().setItemInMainHand(itemInMainHand);
 
 
