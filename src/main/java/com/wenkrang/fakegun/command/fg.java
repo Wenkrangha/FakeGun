@@ -1,7 +1,5 @@
 package com.wenkrang.fakegun.command;
 
-import com.wenkrang.fakegun.FakeGun;
-import com.wenkrang.fakegun.item.ItemSystem;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -71,15 +69,6 @@ public class fg implements CommandExecutor {
                     itemMeta0.setLore(lore0);
                     itemStack0.setItemMeta(itemMeta0);
                     player.getInventory().addItem(itemStack0);
-                }
-            }
-            if (strings[0].equalsIgnoreCase("getgun")) {
-                if (commandSender instanceof Player) {
-                    if (strings.length == 1) {
-                        commandSender.sendMessage("§7[!]  §4用法：/fg getgun <物品名>");
-                    } else {
-                        ItemSystem.items.get(new NamespacedKey(FakeGun.PLUGIN, strings[1]));
-                    }
                 }
             }
 

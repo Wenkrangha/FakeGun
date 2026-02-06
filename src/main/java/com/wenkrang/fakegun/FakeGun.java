@@ -6,7 +6,6 @@ import com.wenkrang.fakegun.event.*;
 import com.wenkrang.fakegun.event.book.FirstSendBookE;
 import com.wenkrang.fakegun.event.book.PlayerClickE;
 import com.wenkrang.fakegun.event.book.PlayerInteractE;
-import com.wenkrang.fakegun.item.RecipeBookUtil;
 import com.wenkrang.fakegun.loader.LoadGun;
 import com.wenkrang.lib.ConsoleLoger;
 import com.wenkrang.lib.Loader;
@@ -27,13 +26,9 @@ import java.util.ArrayList;
 public final class FakeGun extends JavaPlugin {
     public static ArrayList<Gun> Guns = new ArrayList<>();
 
-    public static JavaPlugin PLUGIN;
-
     @Override
     public void onEnable() {
         // Plugin startup logic
-        PLUGIN = this;
-
         getServer().getPluginManager().registerEvents(new FireE(), this);
         getServer().getPluginManager().registerEvents(new PlayerItemHeldE(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinE(), this);
@@ -44,7 +39,6 @@ public final class FakeGun extends JavaPlugin {
 
         this.getCommand("fg").setExecutor(new fg());
         this.getCommand("fg").setTabCompleter(new fgTabComplete());
-
         LoadGun.load();
         Loader.run();
         Bukkit.getServer().getConsoleSender().sendMessage("    ______      __        ______          ");
@@ -54,17 +48,120 @@ public final class FakeGun extends JavaPlugin {
         Bukkit.getServer().getConsoleSender().sendMessage("/_/    \\__,_/_/|_|\\___/\\____/\\__,_/_/ /_/ ");
         Bukkit.getServer().getConsoleSender().sendMessage("");
         ConsoleLoger.info("当前服务器版本：" + VersionChecker.getVersion());
+        getServer().getConsoleSender().sendMessage("§9§l[*] §r加载完毕,当前版本 : 1.1c");
 
-        try {
-            RecipeBookUtil.load();
+        try {for (int i = 0;i < Guns.size();i++) {
+            Gun gun = Guns.get(i);
+            NamespacedKey namespacedKey = new NamespacedKey(this, "Gun" + String.valueOf(i));
+            ShapedRecipe shapedRecipe = new ShapedRecipe(namespacedKey, gun.getItemStack())
+                    .shape("   ", "rty", " i ")
+                    .setIngredient('r', new RecipeChoice.ExactChoice(gun.getRepice()))
+                    .setIngredient('t', new RecipeChoice.ExactChoice(gun.getRepice()))
+                    .setIngredient('y', new RecipeChoice.ExactChoice(gun.getRepice()))
+                    .setIngredient('i', new RecipeChoice.ExactChoice(new ItemStack(Material.IRON_NUGGET)));
+            getServer().addRecipe(shapedRecipe);
+        }
+            if (true) {
+                NamespacedKey namespacedKey = new NamespacedKey(this, "FireGun");
+                ItemStack itemStack = new ItemStack(Material.CROSSBOW);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName("§9§l火箭弹§r发射器");
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add(SpigotConsoleColors.WHITE + "普普通通的火箭筒，可以发射火箭弹，造成");
+                lore.add(SpigotConsoleColors.WHITE + "大爆炸但愿你喜欢吧");
+                lore.add(SpigotConsoleColors.WHITE + "需要子弹  [火箭弹]");
+                lore.add(" ");
+                lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "开枪");
+                lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "副手枪 + 主手弹药  " + SpigotConsoleColors.RESET + " 换弹");
+                itemMeta.setLore(lore);
+                // 获取弩的元数据
+                CrossbowMeta crossbowMeta = (CrossbowMeta) itemMeta;
+
+// 设置弩的属性
+                crossbowMeta.addChargedProjectile(new ItemStack(Material.FIREWORK_ROCKET)); // 设置弩的射出物为烟花火箭
+
+// 应用元数据
+                itemStack.setItemMeta(crossbowMeta);
+
+                ShapedRecipe shapedRecipe = new ShapedRecipe(namespacedKey, itemStack)
+                        .shape("   ", "rty", " i ")
+                        .setIngredient('r', new RecipeChoice.ExactChoice(new ItemStack(Material.FIRE_CHARGE)))
+                        .setIngredient('t', new RecipeChoice.ExactChoice(new ItemStack(Material.FIRE_CHARGE)))
+                        .setIngredient('y', new RecipeChoice.ExactChoice(new ItemStack(Material.FIRE_CHARGE)))
+                        .setIngredient('i', new RecipeChoice.ExactChoice(new ItemStack(Material.IRON_NUGGET)));
+                getServer().addRecipe(shapedRecipe);
+            }
+
+            if (true) {
+                NamespacedKey namespacedKey = new NamespacedKey(this, "SBullet");
+                ItemStack itemStack = new ItemStack(Material.IRON_NUGGET, 64);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName("§9§l小口径§r子弹");
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add(SpigotConsoleColors.WHITE + "这是小口径子弹，适用于射速较快的枪械");
+                itemMeta.setLore(lore);
+                itemStack.setItemMeta(itemMeta);
+
+
+                ShapedRecipe shapedRecipe = new ShapedRecipe(namespacedKey, itemStack)
+                        .shape("   ", "rt ", "   ")
+                        .setIngredient('r', new RecipeChoice.ExactChoice(new ItemStack(Material.GUNPOWDER)))
+                        .setIngredient('t', new RecipeChoice.ExactChoice(new ItemStack(Material.IRON_INGOT)));
+                getServer().addRecipe(shapedRecipe);
+            }
+            if (true) {
+                NamespacedKey namespacedKey = new NamespacedKey(this, "BBullet");
+                ItemStack itemStack = new ItemStack(Material.GOLD_NUGGET, 64);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName("§9§l大口径§r子弹");
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add(SpigotConsoleColors.WHITE + "这是大口径子弹，适用于威力较大的枪械");
+                itemMeta.setLore(lore);
+                itemStack.setItemMeta(itemMeta);
+                ShapedRecipe shapedRecipe = new ShapedRecipe(namespacedKey, itemStack)
+                        .shape("   ", "rt ", "   ")
+                        .setIngredient('r', new RecipeChoice.ExactChoice(new ItemStack(Material.GUNPOWDER)))
+                        .setIngredient('t', new RecipeChoice.ExactChoice(new ItemStack(Material.GOLD_INGOT)));
+                getServer().addRecipe(shapedRecipe);
+            }if (true) {
+                NamespacedKey namespacedKey = new NamespacedKey(this, "FBullet");
+                ItemStack itemStack = new ItemStack(Material.FIRE_CHARGE);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName("§9§l火箭§r弹");
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add(SpigotConsoleColors.WHITE + "这是火箭弹，适用于火箭弹发射器");
+                itemMeta.setLore(lore);
+                itemStack.setItemMeta(itemMeta);
+                ShapedRecipe shapedRecipe = new ShapedRecipe(namespacedKey, itemStack)
+                        .shape("   ", "rt ", "   ")
+                        .setIngredient('r', new RecipeChoice.ExactChoice(new ItemStack(Material.GUNPOWDER)))
+                        .setIngredient('t', new RecipeChoice.ExactChoice(new ItemStack(Material.FIRE_CHARGE)));
+                getServer().addRecipe(shapedRecipe);
+            }
+
+            if (true) {
+                NamespacedKey namespacedKey = new NamespacedKey(this, "SMBUllet");
+                ItemStack itemStack = new ItemStack(Material.FIREWORK_STAR);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName("§9§l烟雾§r弹");
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add(SpigotConsoleColors.WHITE + "你 看 得 见 吗？，一阵烟雾蒙蔽了你的双眼（");
+                lore.add(" ");
+                lore.add(SpigotConsoleColors.DARK_YELLOW + SpigotConsoleColors.BOLD + "右键 " + SpigotConsoleColors.RESET + "投掷");
+                itemMeta.setLore(lore);
+                itemStack.setItemMeta(itemMeta);
+                ShapedRecipe shapedRecipe = new ShapedRecipe(namespacedKey, itemStack)
+                        .shape("   ", "rt ", "   ")
+                        .setIngredient('r', new RecipeChoice.ExactChoice(new ItemStack(Material.GUNPOWDER)))
+                        .setIngredient('t', new RecipeChoice.ExactChoice(new ItemStack(Material.FIRE_CHARGE)));
+                getServer().addRecipe(shapedRecipe);
+            }
 
             if (!getServer().getOnlinePlayers().isEmpty())
-                getServer().getOnlinePlayers().forEach(PlayerCheck::StartCheck);
-        } catch (Exception ignored) {
+                getServer().getOnlinePlayers().stream().forEach(PlayerCheck::StartCheck);
+        }catch (Exception e) {
 
         }
-
-        getServer().getConsoleSender().sendMessage("§9§l[*] §r加载完毕,当前版本 : 1.1c");
 
     }
 

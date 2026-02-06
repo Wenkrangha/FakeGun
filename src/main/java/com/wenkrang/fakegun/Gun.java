@@ -1,53 +1,109 @@
 package com.wenkrang.fakegun;
 
-import com.wenkrang.fakegun.item.ItemSystem;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapedRecipe;
 
-import java.util.Objects;
+public class Gun {
+    public String name;
+    public int ticks;
+    public int Keeps;
+    public int reloadtime;
+    public float AtBack;
+    public ItemStack itemStack;
+    public int speed;
+    public int damage;
+    public int guneed;
+    public ItemStack repice;
 
-@lombok.Getter
-@lombok.Setter
-public class Gun extends ItemSystem.FakeGunItem {
-    public Gun(String name, ItemStack item) {
-        super(name, item);
+    public ItemStack getRepice() {
+        return repice;
     }
 
-    int ticks;
-    int keeps;
-    int reloadtime;
-    float atBack;
-    int speed;
-    int damage;
-    int guneed;
-    Material gunMaterial;
+    public void setRepice(ItemStack repice) {
+        this.repice = repice;
+    }
 
-    @Override
+    public int getGuneed() {
+        return guneed;
+    }
+
+    public void setGuneed(int guneed) {
+        this.guneed = guneed;
+    }
+
+    public void setAtBack(float atBack) {
+        AtBack = atBack;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setKeeps(int keeps) {
+        Keeps = keeps;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTicks(int ticks) {
+        this.ticks = ticks;
+    }
+
+    public void setReloadtime(int reloadtime) {
+        this.reloadtime = reloadtime;
+    }
+
+    public void setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
+    }
+
+    public ItemStack getItemStack() {
+        return itemStack;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public float getAtBack() {
+        return AtBack;
+    }
+
+    public int getKeeps() {
+        return Keeps;
+    }
+
+    public int getReloadtime() {
+        return reloadtime;
+    }
+
+    public int getTicks() {
+        return ticks;
+    }
+
     public void load() {
-        super.load();
         FakeGun.Guns.add(this);
     }
 
-    @Override
-    public void loadRecipe() {
-        NamespacedKey namespacedKey = new NamespacedKey(FakeGun.PLUGIN, "Gun" + getName());
-        ShapedRecipe shapedRecipe = new ShapedRecipe(namespacedKey, getItemStack())
-                .shape("   ", "rrr", " i ")
-                .setIngredient('r', new RecipeChoice.ExactChoice(new ItemStack(gunMaterial)))
-                .setIngredient('i', new RecipeChoice.ExactChoice(new ItemStack(Material.IRON_NUGGET)));
-        setRecipe(shapedRecipe);
-        super.loadRecipe();
-    }
-
     public static Gun getgun(String name) {
-        return FakeGun.Guns.stream()
-                .filter(gun -> Objects.requireNonNull(gun.getItemStack().getItemMeta())
-                        .getDisplayName().equalsIgnoreCase(name))
-                .findFirst()
-                .orElse(null);
+        for (Gun agun : FakeGun.Guns) {
+            if (agun.getName().equalsIgnoreCase(name)) {
+                return agun;
+            }
+        }
+        return null;
     }
 }
