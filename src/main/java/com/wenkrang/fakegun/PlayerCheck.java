@@ -53,10 +53,7 @@ public class PlayerCheck {
                         Damageable damageable = (Damageable) player.getInventory().getItemInMainHand().getItemMeta();
 
 //                        player.addScoreboardTag("reload");
-                        new BukkitRunnable() {
 
-                            @Override
-                            public void run() {
                                 if (player.getInventory().getItemInMainHand().getItemMeta() != null) {
                                     Damageable damageable1 = (Damageable) player.getInventory().getItemInMainHand().getItemMeta();
                                     if (damageable1.getDamage() == 0) {
@@ -140,8 +137,7 @@ public class PlayerCheck {
                                 }
 
 
-                            }
-                        }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, 1);
+
 
                     }
                     if (player.getInventory().getItemInOffHand().getItemMeta() != null && player.getInventory().getItemInMainHand().getItemMeta() != null && player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器") && !player.getScoreboardTags().contains("reload")) {
@@ -153,24 +149,20 @@ public class PlayerCheck {
                                 player.getInventory().setItemInOffHand(null);
                             }
                             player.addScoreboardTag("reload");
-                            new BukkitRunnable() {
 
-                                @Override
-                                public void run() {
-                                    Damageable damageable1 = (Damageable) player.getInventory().getItemInMainHand().getItemMeta();
-                                    for (int i = 0; i < 6; i++) {
-                                        if (player.isOnline() && !player.getScoreboardTags().contains("FireNow") && player.getInventory().getItemInMainHand().getItemMeta() != null && player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器") && damageable1.getDamage() != 0) {
-                                            damageable1.setDamage(damageable1.getDamage() - 1);
-                                            ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-                                            itemInMainHand.setItemMeta(damageable1);
-                                            player.getInventory().setItemInMainHand(itemInMainHand);
-                                        } else {
-                                            player.removeScoreboardTag("reload");
-                                            cancel();
-                                        }
-                                    }
+                            Damageable damageable1 = (Damageable) player.getInventory().getItemInMainHand().getItemMeta();
+                            for (int i = 0; i < 6; i++) {
+                                if (player.isOnline() && !player.getScoreboardTags().contains("FireNow") && player.getInventory().getItemInMainHand().getItemMeta() != null && player.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase("§9§l火箭弹§r发射器") && damageable1.getDamage() != 0) {
+                                    damageable1.setDamage(damageable1.getDamage() - 1);
+                                    ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+                                    itemInMainHand.setItemMeta(damageable1);
+                                    player.getInventory().setItemInMainHand(itemInMainHand);
+                                } else {
+                                    player.removeScoreboardTag("reload");
+                                    cancel();
                                 }
-                            }.runTaskTimer(FakeGun.getPlugin(FakeGun.class), 0, 1);
+                            }
+
                         }
 
 
